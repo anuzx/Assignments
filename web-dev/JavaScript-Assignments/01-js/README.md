@@ -62,14 +62,5 @@ You can follow the recommended order below or complete them in any sequence you 
    npm run all
    ```
 
----
 
-## Demo Video
-
-For a walkthrough on navigating through the assignments, check out this demo video:
-
-https://gist.github.com/user-attachments/assets/c8cc582c-81df-4af8-899f-5161c1b43631
-
-
-### **PS:** If you're stuck on a problem for more than an hour, feel free to check the `solution` folder.
 

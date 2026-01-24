@@ -67,11 +67,4 @@ You can follow the recommended order below or complete them in any sequence you 
   (Replace `1-counter.js` with the relevant file name.)
 - Follow the same approach for medium problems.
 
----
-## Demo Video
 
-For a walkthrough on navigating through the assignments, check out this demo video:
-
-https://gist.github.com/user-attachments/assets/308d33f1-dc1a-47f0-a3c6-bfa957f3e398
-
-### **PS:** If you're stuck on a problem for more than an hour, feel free to check the `solution` folder.

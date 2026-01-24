@@ -68,13 +68,6 @@ You can follow the recommended order below or complete them in any sequence you 
    ```
 
 
----
 
-## Demo Video
 
-For a walkthrough on navigating through the assignments, check out this demo video:
-
-https://gist.github.com/user-attachments/assets/32932768-3aa5-4b54-89ea-2fc1744873af
-
-### **PS:** If you're stuck on a problem for more than an hour, feel free to check the `solution` folder.
 
