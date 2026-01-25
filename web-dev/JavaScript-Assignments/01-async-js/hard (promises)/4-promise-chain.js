@@ -6,19 +6,49 @@
  */
 
 function wait1(t) {
-
+  let p = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, t * 1000);
+  });
+  return p;
 }
 
 function wait2(t) {
-
+  let p = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, t * 1000);
+  });
+  return p;
 }
 
 function wait3(t) {
-
+  let p = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, t * 1000);
+  });
+  return p;
 }
 
 function calculateTime(t1, t2, t3) {
+//we need to call the fxns one by one , therefore we will not do wait1(t1) ; wait2(t2) -> as this will call the functions at the same time
+const start = Date.now();
 
+return wait1(t1)
+  .then(() => wait2(t2))
+  .then(() => wait3(t3))
+  .then(() => {
+    const end = Date.now();
+    return end - start;
+  });
 }
+
+// wait2 starts only after wait1 finishes
+// returning a promise from .then() : pauses the chain and waits for that promise to resolve (sequential async flow)
+
+// For sequential execution → chain promises using .then(),
+// returning each promise so the next waits for the previous
 
 module.exports = calculateTime;

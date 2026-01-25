@@ -5,19 +5,48 @@
  */
 
 function wait1(t) {
+  let p = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, t * 1000);
+  });
 
+  return p;
 }
 
 function wait2(t) {
-
+  let p = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, t * 1000);
+  });
+  return p;
 }
 
 function wait3(t) {
-
+  let p = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, t * 1000);
+  });
+  return p;
 }
 
 function calculateTime(t1, t2, t3) {
+    const start = Date.now()
 
+
+    return Promise.all([wait1(t1), wait2(t2), wait3(t3)]).then(() => {
+        const end = Date.now()
+        const time = end - start
+        return time
+    })
 }
+
+//calculateTime(1, 2, 3).then(console.log);
+
+//using promise.all -> promises run concurrently (at the same time) 
+//total time = max(t1,t2,t3)
+//faster when tasks are independent
 
 module.exports = calculateTime;
