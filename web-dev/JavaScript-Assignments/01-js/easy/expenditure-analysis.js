@@ -9,7 +9,26 @@
 */
 
 function calculateTotalSpentByCategory(transactions) {
-    return [];
+  let totals = {};
+  for (let txn of transactions) {
+    let category = txn.category;
+    let price = txn.price;
+
+    if (totals[category] === undefined) {
+      totals[category] = price;
+    } else {
+      totals[category] += price;
+    }
+  }
+
+  let result = [];
+  for (let category in totals) {
+    result.push({ category: category, totalSpent: totals[category] });
+  }
+
+  return result;
 }
 
 module.exports = calculateTotalSpentByCategory;
+
+//use for of -> values and for in -> keys
