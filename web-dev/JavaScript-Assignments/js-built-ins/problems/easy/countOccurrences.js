@@ -21,7 +21,20 @@
 
 function countOccurrences(arr) {
   // Your code here
+  let result = {}
+  for (let i = 0; i < arr.length; i++){
+    let element = arr[i]
+    if (result[element]) {
+      result[element]++
+    } else {
+      result[element] = 1
+    }
+  }
+  return result
 }
+
+//object[key] = value
+//“Create a key named element (or update it if it exists) and set its value to 1”
 
 module.exports = countOccurrences;
 

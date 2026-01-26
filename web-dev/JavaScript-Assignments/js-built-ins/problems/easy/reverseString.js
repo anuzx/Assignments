@@ -19,7 +19,31 @@
 */
 
 function reverseString(str) {
-  // Your code here
+  let arr = str.split(""); // string -> array
+  let l = 0;
+  let r = arr.length - 1;
+
+  while (l <= r) {
+    let temp = arr[l];
+    arr[l] = arr[r];
+    arr[r] = temp;
+
+    l++;
+    r--;
+  }
+
+  return arr.join(""); //array -> string
+
+  //alt solution :
+
+  //return str.split("").reverse().join("")
 }
+
+//strings are immutable so swapping won't work ever
+
+//.split() breaks a string into an array based on a separator.
+//eg: "hello" -> ["h", "e", "l", "l", "o"] {if .split("")}
+
+//.join() joins array elements into a string.
 
 module.exports = reverseString;
