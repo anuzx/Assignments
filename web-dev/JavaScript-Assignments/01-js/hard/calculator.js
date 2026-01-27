@@ -18,6 +18,7 @@
 */
 
 class Calculator {
+  //A constructor is a setup function that runs automatically when you create an object.
   constructor(result) {
     this.result = 0;
   }
@@ -56,6 +57,12 @@ class Calculator {
     let value;
     try {
       value = Function(`"use strict"; return (${expr})`)();
+      //Function(...)() => to execute it immediately
+      // "use strict" -> disallows unsafe js , prevents silent errors , blocks access to glocal variables
+
+      /* this creates a fxn like:function () {
+         "use strict";
+         return (10+2*(6-3));} */
     } catch (err) {
       throw new Error("Invalid expression");
     }
@@ -69,5 +76,7 @@ class Calculator {
     return this.result;
   }
 }
+
+//Function constructor ->  It’s a built-in JavaScript constructor that creates a real function from a string.
 
 module.exports = Calculator;
