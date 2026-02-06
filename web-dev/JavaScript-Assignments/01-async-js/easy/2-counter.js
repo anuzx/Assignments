@@ -14,8 +14,9 @@ function counter() {
 
 counter();
 
-// setTimeout(counter, 1000);
 //If you want it to start after 1 second, do this instead:
+// setTimeout(counter, 1000);
+
 
 //difference between setInterval and setTimeout
 

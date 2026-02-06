@@ -19,15 +19,24 @@
 */
 
 function getUniqueElements(arr) {
-  // Your code here
-  let result = [];
+  // basic logic 
 
-  for (let i = 0; i < arr.length; i++) {
-    if (!result.includes(arr[i])) {
-      result.push(arr[i]);
-    }
-  }
-  return result;
+  // let result = [];
+  // for (let i = 0; i < arr.length; i++) {
+  //   if (!result.includes(arr[i])) {
+  //     result.push(arr[i]);
+  //   }
+  // }
+  // return result;
+
+  //hashSet
+
+  // const mySet = new Set(arr);
+  // const uniqueArr = [...mySet];
+  // return uniqueArr;
+
+  //filter
+  return arr.filter((ele , index)=> arr.indexOf(ele) == index )
 }
 
 module.exports = getUniqueElements;
