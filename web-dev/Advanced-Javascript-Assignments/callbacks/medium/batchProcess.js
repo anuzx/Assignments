@@ -12,6 +12,12 @@
 // - Start new work as soon as one finishes.
 // - Stop and return an error if any task fails.
 
-function batchProcess(items, limit, worker, onComplete) {}
+function batchProcess(items, limit, worker, onComplete) {
+
+    if (limit === worker) {
+        return 
+    }
+    
+}
 
 module.exports = batchProcess;
