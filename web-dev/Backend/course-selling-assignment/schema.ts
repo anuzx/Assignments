@@ -21,7 +21,7 @@ export const CreateCourseSchema = z.object({
 export const CreateLessonSchema = z.object({
   title: z.string(),
   content: z.string(),
-  couseId: z.string(),
+  courseId: z.string(),
 });
 
 export const PurchaseCourseSchema = z.object({

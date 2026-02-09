@@ -22,8 +22,9 @@ export const handleSignup = async (req: Request, res: Response) => {
         email: parsedData.data?.email,
         password: hashedPass,
         name: parsedData.data?.name,
-        role: parsedData.data?.role,
+        role:parsedData.data.role
       },
+
     });
 
     res.json({
@@ -72,6 +73,7 @@ export const handleLogin = async (req: Request, res: Response) => {
     const token = jwt.sign(
       {
         id: existingUser.id,
+        role:existingUser.role
       },
       process.env.JWT_SECRET!,
     );

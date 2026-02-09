@@ -1,15 +1,27 @@
 import { Router } from "express";
-import { createCourses, deleteCourses, getCoursesWithLessons, PublicPosts, updateCourse } from "../controller/course.controller";
+import {
+  createCourses,
+  deleteCourses,
+  getCoursesWithLessons,
+  publicLesson,
+  PublicPosts,
+  updateCourse,
+} from "../controller/course.controller";
+import { authMiddleware, requireRole } from "../auth.middleware";
 
-const router = Router()
+const router = Router();
 
-router.route("/").post(createCourses)
-router.route("/").get(PublicPosts)
-router.route("/:id").get(getCoursesWithLessons)
-router.route("/:id").patch(updateCourse)
-router.route("/:id").delete(deleteCourses)
+router
+  .route("/")
+  .get(PublicPosts)
+  .post(authMiddleware, requireRole(["INSTRUCTOR"]), createCourses);
 
+router
+  .route("/:id")
+  .get(getCoursesWithLessons)
+  .patch(authMiddleware, requireRole(["INSTRUCTOR"]), updateCourse)
+  .delete(authMiddleware, requireRole(["INSTRUCTOR"]), deleteCourses);
 
+router.route("/:courseId/lessons").get(publicLesson);  
 
-export default router
-
+export default router;

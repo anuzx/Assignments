@@ -10,14 +10,14 @@ datasource db {
 }
 
 model User {
-  id         String     @id     @default(uuid())
-  email      String     @unique
-  password   String
-  name       String
-  role       Role
-  createAt   DateTime   @default(now())
-  courses    Course[]
-  purchases  Purchase[]
+  id          String     @id     @default(uuid())
+  email       String     @unique
+  password    String
+  name        String
+  role        Role       @default(STUDENT)
+  createdAt   DateTime   @default(now())
+  courses     Course[]
+  purchases   Purchase[]
 }
 
 enum Role{
@@ -26,16 +26,16 @@ enum Role{
 }
 
 model Course{
-  id           String     @id     @default(uuid())
-  title        String
-  description  String?
-  price        Int
-  instructorId String
-  createAt     DateTime  @default(now())
-  updatedAt    DateTime  @default(now())
-  user         User      @relation(fields: [instructorId],references: [id])
-  lessons      Lesson[]
-  purchases    Purchase[]
+  id                  String     @id     @default(uuid())
+  title               String
+  description         String?
+  price               Int
+  instructorId        String
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  instructor          User      @relation(fields: [instructorId],references: [id])
+  lessons             Lesson[]
+  purchases           Purchase[]
 }
 
 model Lesson{
@@ -54,4 +54,6 @@ model Purchase {
   createdAt    DateTime   @default(now())
   user         User       @relation(fields: [userId] , references: [id])
   course       Course     @relation(fields: [courseId], references: [id])
+   @@unique([userId, courseId]) //this will prevent a user from buying the same course multiple times
 }
+
