@@ -9,23 +9,7 @@
 
 
 function callbackify(fn) {
-    //making a wrapper func becuz we can't change original fn
-    return function (...args) //array of arguments 
-    {
-        const callback = args.pop()//removes the last element from an array which is callback
 
-        //spread operator
-        fn(...args).then((data) => {
-            callback(null,data)
-        }).catch((error) => {
-            callback(error)
-        })
-    }
 }
-
-//in this ques we need to convert fn into a callback style fn
-//promise style (current): fn(a, b).then(result => {}).catch(err => {});
-//callback style : fn(a, b, (err, result) => {});
-
 
 module.exports = callbackify;

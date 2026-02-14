@@ -11,17 +11,6 @@
 // 2. Use a `while` loop with `Date.now()` or `performance.now()`.
 // 3. This is a teaching tool to show how NOT to write async code.
 
-function blockEventLoop(ms) {
-  //    const start = Date.now();
-
-  //    while (Date.now() - start < ms) {
-
-  //    }
-
-  const start = performance.now();
-  while (performance.now() - start < ms) {}
-}
-
-//performance.now() returns a high-resolution timestamp representing the number of milliseconds elapsed since the page (or Node process) started.
+function blockEventLoop(ms) {}
 
 module.exports = blockEventLoop;

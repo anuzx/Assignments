@@ -8,19 +8,8 @@
 // If the operation exceeds the time limit, the callback is invoked with an Error
 // whose message is "Request Timed Out".
 
-function fetchWithTimeout(url, ms, callback) {
-   let timer = setTimeout(() => {
-     callback(new Error("Request Timed Out"));
-   }, ms);
 
-   fetch(url, (err, data) => {
-     clearTimeout(timer);
-     if (err) {
-       callback(err);
-     } else {
-       callback(null, data);
-     }
-   });
+function fetchWithTimeout(url, ms, callback) {
 
 }
 
