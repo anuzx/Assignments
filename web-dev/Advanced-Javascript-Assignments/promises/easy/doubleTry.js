@@ -1,4 +1,3 @@
-
 // // Problem Description – Double Try (Basic Retry)
 // //
 // // You are given an async function fn that may fail.
@@ -10,6 +9,13 @@
 
 async function doubleTry(fn) {
 
+  try {
+    const result = await fn().catch(() => fn());
+
+    return result;
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 module.exports = doubleTry;
