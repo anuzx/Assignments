@@ -9,12 +9,17 @@
     "test:verbose": "vitest run --reporter=verbose"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/pg": "^8.16.0",
+    "prisma": "^7.4.0"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.4.0",
+    "@prisma/client": "^7.4.0",
+    "pg": "^8.18.0",
     "vitest": "^4.0.17"
   }
 }
