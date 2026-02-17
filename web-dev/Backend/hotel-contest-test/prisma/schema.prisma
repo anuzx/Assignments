@@ -19,33 +19,84 @@ enum Role {
 }
 
 model User {
-  id       String      @id        @default(uuid())
-  name     String      
-  email    String      @unique   
-  password String      
-  role     Role        
-  phone    String?       @db.VarChar(20)     
-  createdAt   DateTime    @default(now())          
-  hotels    Hotel[]
+  id          String        @id        @default(uuid())
+  name        String      
+  email       String        @unique   
+  password    String      
+  role        Role          @default(customer)
+  phone       String?       @db.VarChar(20)     
+  createdAt   DateTime      @default(now())          
+  hotels      Hotel[]
+  bookings    Booking[]
+  reviews     Review[]
 }
 
 model Hotel{
-  id       String      @id     @default(uuid())
-  name     String
+  id           String      @id     @default(uuid())
+  name         String
   description  String?
-  city       String
-  country    String
-  amenities  Json      @default("[]")
-  rating     Float     @default(0.0) 
-  totalReviews  Int    @default(0)
-  createdAt   DateTime    @default(now())   
-  ownerId     String
-  owner       User     @relation(fields: [ownerId] , references: [id])
-  rooms       Room[]
+  city         String
+  country      String
+  amenities    Json        @default("[]")
+  rating       Decimal     @db.Decimal(2,1)      @default(0.0) 
+  totalReviews Int         @default(0)
+  createdAt    DateTime    @default(now())   
+  ownerId      String
+  owner        User        @relation(fields: [ownerId] , references: [id])
+  rooms        Room[]
+  bookings     Booking[]
+  reviews      Review[]
 }
 
 model Room {
-  id      String     @id       @default(uuid())
-  hotelId String 
-  hotel   Hotel      @relation(fields: [hotelId] , references: [id])
+  id            String     @id       @default(uuid())
+  hotelId       String 
+  hotel         Hotel      @relation(fields: [hotelId] , references: [id])
+  roomNumber    String     @db.VarChar(50)
+  roomType      String     @db.VarChar(100)
+  pricePerNight Decimal    @db.Decimal(10, 2)
+  maxOccupancy  Int
+  createdAt     DateTime   @default(now())
+  bookings      Booking[]
+
+  @@unique([hotelId, roomNumber]) // ensure hotel has each roomNumber unique
+}
+
+enum BookingStatus {
+  confirmed
+  cancelled
+}
+
+model Booking {
+  id           String          @id      @default(uuid())
+  userId       String
+  user         User            @relation(fields: [userId] , references: [id])
+  roomId       String 
+  room         Room            @relation(fields: [roomId] , references: [id])
+  hotelId      String
+  hotel        Hotel           @relation(fields: [hotelId] , references: [id])
+  checkInDate  DateTime        @db.Date
+  checkOutDate DateTime        @db.Date
+  guests       Int
+  totalPrice   Decimal         @db.Decimal(10,2)
+  status       BookingStatus   @default(confirmed)
+  bookingDate  DateTime        @default(now())
+  cancelledAt  DateTime?
+  reviews      Review[]
+
+}
+
+model Review {
+  id      String       @id        @default(uuid())
+  userId  String
+  user    User         @relation(fields: [userId] , references: [id])
+  hotelId   String      
+  hotel     Hotel      @relation(fields: [hotelId] , references: [id])
+  bookingId String      
+  booking   Booking    @relation(fields: [bookingId] , references: [id])
+  rating   Int     
+  comment  String
+  createdAt  DateTime  @default(now())
+
+  @@unique([userId ,bookingId])
 }
