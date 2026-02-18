@@ -12,12 +12,12 @@ const router = Router();
 router
   .route("/")
   .post(VerifyUser, AccessibleOnlyTo(["owner"]), CreateHotel)
-  .get(VerifyUser ,searchAndFilterHotels);
+  .get(VerifyUser, searchAndFilterHotels);
 
 router
   .route("/:hotelId/rooms")
   .post(VerifyUser, AccessibleOnlyTo(["owner"]), AddRoomToHotel);
 
-router.route("/:hotelId").get(hotelInfoWithRooms);
+router.route("/:hotelId").get(VerifyUser, hotelInfoWithRooms);
 
 export default router;

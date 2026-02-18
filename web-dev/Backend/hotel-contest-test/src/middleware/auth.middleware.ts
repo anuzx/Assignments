@@ -36,10 +36,8 @@ export const VerifyUser = (req:Request, res:Response, next:NextFunction) => {
 export const AccessibleOnlyTo = (role:string[] = [])=>{
     return function (req: Request, res: Response, next: NextFunction) {
      if (!req.user?.id) {
-       res.status(403).json({
-         message: "user not authenticated",
-       });
-       return;
+      res.status(401).json(ErrorResponse("UNAUTHORIZED"));
+      return;
      }
      if (!role.includes(req.user.role)) {
        res.status(403).json(ErrorResponse("FORBIDDEN"));
