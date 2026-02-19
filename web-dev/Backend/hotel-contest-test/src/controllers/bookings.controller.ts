@@ -1,8 +1,8 @@
+// bookings.controller.ts
 import type { Request, Response } from "express";
-import { BookingSchema } from "../schema/schema";
-import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import { prisma } from "../../client";
-import {ApiError} from "../utils/ApiResponse"
+import { BookingSchema } from "../schema/schema";
+import { ApiError, ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 
 export const CreateNewBooking = async (req: Request, res: Response) => {
   const parsedData = BookingSchema.safeParse(req.body);
@@ -21,78 +21,91 @@ export const CreateNewBooking = async (req: Request, res: Response) => {
 
   try {
     const result = await prisma.$transaction(async (tx) => {
-      // Check room exists
       const room = await tx.room.findUnique({
         where: { id: roomId },
         include: { hotel: true },
       });
 
       if (!room) {
-       throw new ApiError("ROOM_NOT_FOUND" , 404);
+        throw new ApiError("ROOM_NOT_FOUND", 404);
       }
 
-      // Check past dates
+      if (room.hotel.ownerId === userId) {
+        throw new ApiError("FORBIDDEN", 403);
+      }
+
       const today = new Date();
-      if (checkInDate < today || checkOutDate <= checkInDate) {
-       throw new ApiError("INVALID_DATES" , 400);
+      today.setHours(0, 0, 0, 0);
+
+      const checkIn = new Date(checkInDate);
+      const checkOut = new Date(checkOutDate);
+
+      //checkout before checkin check FIRST, before date validation
+      if (checkOut <= checkIn) {
+        throw new ApiError("INVALID_REQUEST", 400);
       }
 
-      //  Check capacity
+      // strictly less than — checkIn on a past date is invalid
+      // Using < today means today itself is still valid (matches test behavior)
+      if (checkIn < today) {
+        throw new ApiError("INVALID_DATES", 400);
+      }
+
       if (guests > room.maxOccupancy) {
-        throw new ApiError("INVALID_CAPACITY",400);
+        throw new ApiError("INVALID_CAPACITY", 400);
       }
 
-      //  Check overlapping booking
-      const overlappingBooking = await tx.booking.findFirst({
+      // FIX C: use tx not prisma, filter confirmed only
+      const existingBookings = await tx.booking.findMany({
         where: {
           roomId,
           status: "confirmed",
-          AND: [
-            {
-              checkInDate: { lt: checkOutDate },
-            },
-            {
-              checkOutDate: { gt: checkInDate },
-            },
-          ],
+        },
+        select: {
+          checkInDate: true,
+          checkOutDate: true,
         },
       });
 
-      if (overlappingBooking) {
-        throw new ApiError("ROOM_NOT_AVAILABLE" , 400);
+      const isOverlapping = existingBookings.some((booking) => {
+        const existingCheckIn = new Date(booking.checkInDate);
+        const existingCheckOut = new Date(booking.checkOutDate);
+        return checkIn < existingCheckOut && checkOut > existingCheckIn;
+      });
+
+      if (isOverlapping) {
+        throw new ApiError("ROOM_NOT_AVAILABLE", 400);
       }
 
-      // Calculate total price
       const nights =
-        (checkOutDate.getTime() - checkInDate.getTime()) /
-        (1000 * 60 * 60 * 24);
-
+        (checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24);
       const totalPrice = nights * room.pricePerNight.toNumber();
 
-      // Create booking
       const booking = await tx.booking.create({
         data: {
           userId,
           roomId,
           hotelId: room.hotelId,
-          checkInDate,
-          checkOutDate,
+          checkInDate: checkIn,
+          checkOutDate: checkOut,
           guests,
           totalPrice,
-          status: "confirmed",
         },
       });
 
       return booking;
     });
 
-    return res.status(201).json(SuccessResponse(result));
+    const formattedResult = {
+      ...result,
+      totalPrice: result.totalPrice.toNumber(),
+    };
+
+    return res.status(201).json(SuccessResponse(formattedResult));
   } catch (error: any) {
-    console.log(error);
     if (error instanceof ApiError) {
       return res.status(error.statusCode).json(ErrorResponse(error.message));
     }
-
     return res.status(500).json(ErrorResponse("SERVER_ERROR"));
   }
 };
@@ -108,28 +121,20 @@ export const GetBookingsOfCurrentUser = async (req: Request, res: Response) => {
 
   const status = req.query.status as BookingStatusType | undefined;
 
-  //one user can have multiple bookings therefore findMany
   const bookings = await prisma.booking.findMany({
     where: {
-      userId: userId,
-      ...(status && { status: {} }),
+      userId,
+      ...(status && { status }),
     },
     include: {
       room: {
-        select: {
-          roomNumber: true,
-          roomType: true,
-        },
+        select: { roomNumber: true, roomType: true },
       },
       hotel: {
-        select: {
-          name: true,
-        },
+        select: { name: true },
       },
     },
-    orderBy: {
-      bookingDate: "desc",
-    },
+    orderBy: { bookingDate: "desc" },
   });
 
   const formattedBookings = bookings.map((booking) => ({
@@ -151,12 +156,8 @@ export const GetBookingsOfCurrentUser = async (req: Request, res: Response) => {
 };
 
 export const cancelBooking = async (req: Request, res: Response) => {
-  //cancellation logic :
-  // check booking exists > check booking belongs to user > check not alreay cancelled > check 24 hour rule > update booking > return selected fields 
-
   const bookingId = req.params.bookingId as string;
-
-  const userId = req.user?.id;
+  const userId = req.user?.id as string;
 
   if (!userId) {
     return res.status(401).json(ErrorResponse("UNAUTHORIZED"));
@@ -165,53 +166,45 @@ export const cancelBooking = async (req: Request, res: Response) => {
   try {
     const result = await prisma.$transaction(async (tx) => {
       const availBooking = await tx.booking.findUnique({
-        where: {
-          id: bookingId,
-        },
+        where: { id: bookingId },
       });
 
       if (!availBooking) {
-        throw new ApiError("BOOKING_NOT_FOUND" ,404 );
+        throw new ApiError("BOOKING_NOT_FOUND", 404);
       }
 
+      // ownership check before status check
       if (availBooking.userId !== userId) {
-        throw new ApiError("UNAUTHORIZED" ,401);
+        throw new ApiError("FORBIDDEN", 403);
       }
 
       if (availBooking.status === "cancelled") {
-        throw new ApiError("ALREADY_CANCELLED" ,400);
+        throw new ApiError("ALREADY_CANCELLED", 400);
       }
 
       const now = new Date();
-      const diff = availBooking.checkInDate.getTime() - now.getTime();
+      const checkIn = new Date(availBooking.checkInDate);
+      const hoursUntilCheckIn =
+        (checkIn.getTime() - now.getTime()) / (1000 * 60 * 60);
 
-      if (diff < 24 * 60 * 60 * 1000) {
-        throw new Error("CANCELLATION_DEADLINE_PASSED");
+      if (hoursUntilCheckIn < 24) {
+        throw new ApiError("CANCELLATION_DEADLINE_PASSED", 400);
       }
 
-
-      //cancel the booking and not del it
       const updated = await tx.booking.update({
         where: { id: bookingId },
-        data: {
-          status: "cancelled",
-          cancelledAt: new Date(),
-        },
-        select: {
-          id: true,
-          status: true,
-          cancelledAt: true,
-        },
+        data: { status: "cancelled", cancelledAt: new Date() },
+        select: { id: true, status: true, cancelledAt: true },
       });
 
       return updated;
     });
+
     return res.status(200).json(SuccessResponse(result));
   } catch (error) {
     if (error instanceof ApiError) {
       return res.status(error.statusCode).json(ErrorResponse(error.message));
     }
-
     return res.status(500).json(ErrorResponse("SERVER_ERROR"));
   }
 };
