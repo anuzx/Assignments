@@ -40,3 +40,9 @@ export const BookingSchema = z.object({
     guests:z.number()
     
 })
+
+export const ReviewSchema = z.object({
+    bookingId: z.string(),
+    rating: z.number(),
+    comment:z.string()
+})
