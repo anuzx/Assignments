@@ -26,10 +26,10 @@ export const CreateHotel = async (req: Request, res: Response) => {
       },
     });
 
-     const formattedHotel = {
-       ...hotel,
-       rating: Number(hotel.rating),
-     };
+    const formattedHotel = {
+      ...hotel,
+      rating: Number(hotel.rating),
+    };
 
     return res.status(201).json(SuccessResponse(formattedHotel));
   } catch (error) {
@@ -72,20 +72,20 @@ export const searchAndFilterHotels = async (req: Request, res: Response) => {
     };
   }
 
- const hotels = await prisma.hotel.findMany({
-   where: whereClause,
-   include: {
-     rooms: {
-       where:
-         Object.keys(priceFilter).length > 0
-           ? { pricePerNight: priceFilter }
-           : undefined,
-       select: {
-         pricePerNight: true,
-       },
-     },
-   },
- });
+  const hotels = await prisma.hotel.findMany({
+    where: whereClause,
+    include: {
+      rooms: {
+        where:
+          Object.keys(priceFilter).length > 0
+            ? { pricePerNight: priceFilter }
+            : undefined,
+        select: {
+          pricePerNight: true,
+        },
+      },
+    },
+  });
 
   const formattedHotels = hotels.map((hotel) => ({
     id: hotel.id,
@@ -158,9 +158,7 @@ export const AddRoomToHotel = async (req: Request, res: Response) => {
       pricePerNight: result.pricePerNight.toNumber(),
     };
 
-    return res.status(201).json(
-      SuccessResponse(finalResult),
-    );
+    return res.status(201).json(SuccessResponse(finalResult));
   } catch (error) {
     if (error instanceof ApiError) {
       return res.status(error.statusCode).json(ErrorResponse(error.message));
@@ -168,7 +166,6 @@ export const AddRoomToHotel = async (req: Request, res: Response) => {
 
     return res.status(500).json(ErrorResponse("SERVER_ERROR"));
   }
-
 };
 
 export const hotelInfoWithRooms = async (req: Request, res: Response) => {
