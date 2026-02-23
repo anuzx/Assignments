@@ -19,8 +19,8 @@
 
 class Calculator {
   //A constructor is a setup function that runs automatically when you create an object.
-  constructor(result) {
-    this.result = 0;
+  constructor(result=0) {
+    this.result = result
   }
 
   add(n) {

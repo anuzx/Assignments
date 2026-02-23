@@ -12,8 +12,8 @@
 */
 
 class Todo {
-  constructor(todos) {
-    this.todos = [];
+  constructor(todos = []) {
+    this.todos = todos;
   }
   add(todo) {
     return (this.todos = [...this.todos, todo]);
