@@ -1,0 +1,9 @@
+import express from "express";
+const app = express();
+app.use(express.json());
+import authRouter from "./routes/auth.route.js";
+app.use("/api/auth", authRouter);
+app.listen(3000, () => {
+    console.log("serever started at 3000");
+});
+//# sourceMappingURL=index.js.map

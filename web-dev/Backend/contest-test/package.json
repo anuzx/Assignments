@@ -4,7 +4,7 @@
   "description": "Contest Platform Backend Assignment",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc -b && node ./dist/index.js",
+    "dev": "npx tsc -b && node ./dist/src/index.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui"
@@ -16,7 +16,9 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.1",
     "@prisma/client": "^7.4.1",
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/pg": "^8.16.0",
     "bcrypt": "^6.0.0",
     "express": "^5.2.1",

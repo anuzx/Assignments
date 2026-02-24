@@ -4,7 +4,9 @@ const app = express()
 
 app.use(express.json())
 
-app.use("/api/auth")
+import authRouter from "./routes/auth.route.js"
+
+app.use("/api/auth" ,authRouter )
 
 app.listen(3000 , ()=>{console.log("serever started at 3000");
 })
