@@ -1,0 +1,110 @@
+
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role{
+  creator 
+  contestee
+}
+
+model User {
+  id             String     @id      @default(uuid())
+  name           String   
+  email          String     @unique
+  password       String
+  role           Role       @default(contestee)
+  createdAt      DateTime   @default(now())
+  contests       Contest[]
+  mcqSubmissions McqSubmission[]
+  dsaSubmissions DsaSubmission[]
+}
+
+model Contest {
+  id            String      @id      @default(uuid())
+  title         String
+  description   String
+  creatorId     String
+  creator       User        @relation(fields: [creatorId] , references: [id])
+  startTime     DateTime
+  endTime       DateTime
+  createdAt     DateTime    @default(now())
+  mcqQuestions  McqQuestion[]
+  dsaQuestions  DsaProblem[]
+
+}
+
+model McqQuestion {
+  id                  String      @id      @default(uuid())
+  contestId           String
+  contest             Contest     @relation(fields: [contestId], references: [id])
+  questionText        String
+  options             Json
+  correctOptionIndex  Int
+  points              Int         @default(1)
+  createdAt           DateTime    @default(now())
+  mcqSubmissions      McqSubmission[]
+ 
+}
+
+model DsaProblem {
+  id           String      @id      @default(uuid())
+  contestId    String
+  contest      Contest     @relation(fields: [contestId], references: [id])
+  title        String
+  description  String
+  tags         Json
+  points       Int         @default(100)
+  timeLimit    Int         @default(2000)
+  memoryLimit  Int         @default(256)
+  createdAt    DateTime    @default(now())
+  dsaSubmissions DsaSubmission[]
+  testCases      TestCase[]
+}
+
+model TestCase {
+   id             String      @id      @default(uuid())
+   problemId      String
+   problem        DsaProblem  @relation(fields: [problemId], references: [id])
+   input          String
+   expectedOutput String
+   isHidden       Boolean    @default(false)
+   createdAt      DateTime
+}
+
+model McqSubmission {
+    id                  String      @id      @default(uuid())
+    userId              String
+    user                User        @relation(fields: [userId], references: [id])
+    questionId          String
+    mcqQuestion         McqQuestion @relation(fields: [questionId], references: [id])
+    selectedOptionIndex Int
+    isCorrect           Boolean
+    pointsEarned        Int         @default(0)
+    submittedAt         DateTime
+
+    @@unique([userId , questionId])
+
+}
+
+model DsaSubmission {
+    id             String      @id      @default(uuid())
+    userId          String
+    user            User        @relation(fields: [userId], references: [id])
+    questionId      String
+    dsaQuestion     DsaProblem @relation(fields: [questionId], references: [id])
+    code            String
+    language        String
+    status          String
+    pointsEarned    Int         @default(0)
+    testCasesPassed Int         @default(0)
+    totalTestCases  Int         @default(0)
+    executionTime   Int
+    submittedAt     DateTime
+}
