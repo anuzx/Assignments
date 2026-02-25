@@ -61,7 +61,7 @@ CREATE TABLE "TestCase" (
     "input" TEXT NOT NULL,
     "expectedOutput" TEXT NOT NULL,
     "isHidden" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "TestCase_pkey" PRIMARY KEY ("id")
 );
@@ -74,7 +74,7 @@ CREATE TABLE "McqSubmission" (
     "selectedOptionIndex" INTEGER NOT NULL,
     "isCorrect" BOOLEAN NOT NULL,
     "pointsEarned" INTEGER NOT NULL DEFAULT 0,
-    "submittedAt" TIMESTAMP(3) NOT NULL,
+    "submittedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "McqSubmission_pkey" PRIMARY KEY ("id")
 );

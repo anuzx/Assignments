@@ -196,7 +196,7 @@ export type TestCaseCreateInput = {
     input: string;
     expectedOutput: string;
     isHidden?: boolean;
-    createdAt: Date | string;
+    createdAt?: Date | string;
     problem: Prisma.DsaProblemCreateNestedOneWithoutTestCasesInput;
 };
 export type TestCaseUncheckedCreateInput = {
@@ -205,7 +205,7 @@ export type TestCaseUncheckedCreateInput = {
     input: string;
     expectedOutput: string;
     isHidden?: boolean;
-    createdAt: Date | string;
+    createdAt?: Date | string;
 };
 export type TestCaseUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -229,7 +229,7 @@ export type TestCaseCreateManyInput = {
     input: string;
     expectedOutput: string;
     isHidden?: boolean;
-    createdAt: Date | string;
+    createdAt?: Date | string;
 };
 export type TestCaseUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -324,14 +324,14 @@ export type TestCaseCreateWithoutProblemInput = {
     input: string;
     expectedOutput: string;
     isHidden?: boolean;
-    createdAt: Date | string;
+    createdAt?: Date | string;
 };
 export type TestCaseUncheckedCreateWithoutProblemInput = {
     id?: string;
     input: string;
     expectedOutput: string;
     isHidden?: boolean;
-    createdAt: Date | string;
+    createdAt?: Date | string;
 };
 export type TestCaseCreateOrConnectWithoutProblemInput = {
     where: Prisma.TestCaseWhereUniqueInput;
@@ -370,7 +370,7 @@ export type TestCaseCreateManyProblemInput = {
     input: string;
     expectedOutput: string;
     isHidden?: boolean;
-    createdAt: Date | string;
+    createdAt?: Date | string;
 };
 export type TestCaseUpdateWithoutProblemInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;

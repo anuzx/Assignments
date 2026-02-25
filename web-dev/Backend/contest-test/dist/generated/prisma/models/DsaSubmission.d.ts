@@ -307,7 +307,7 @@ export type DsaSubmissionCreateInput = {
     testCasesPassed?: number;
     totalTestCases?: number;
     executionTime: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutDsaSubmissionsInput;
     dsaQuestion: Prisma.DsaProblemCreateNestedOneWithoutDsaSubmissionsInput;
 };
@@ -322,7 +322,7 @@ export type DsaSubmissionUncheckedCreateInput = {
     testCasesPassed?: number;
     totalTestCases?: number;
     executionTime: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
 };
 export type DsaSubmissionUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -361,7 +361,7 @@ export type DsaSubmissionCreateManyInput = {
     testCasesPassed?: number;
     totalTestCases?: number;
     executionTime: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
 };
 export type DsaSubmissionUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -531,7 +531,7 @@ export type DsaSubmissionCreateWithoutUserInput = {
     testCasesPassed?: number;
     totalTestCases?: number;
     executionTime: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
     dsaQuestion: Prisma.DsaProblemCreateNestedOneWithoutDsaSubmissionsInput;
 };
 export type DsaSubmissionUncheckedCreateWithoutUserInput = {
@@ -544,7 +544,7 @@ export type DsaSubmissionUncheckedCreateWithoutUserInput = {
     testCasesPassed?: number;
     totalTestCases?: number;
     executionTime: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
 };
 export type DsaSubmissionCreateOrConnectWithoutUserInput = {
     where: Prisma.DsaSubmissionWhereUniqueInput;
@@ -592,7 +592,7 @@ export type DsaSubmissionCreateWithoutDsaQuestionInput = {
     testCasesPassed?: number;
     totalTestCases?: number;
     executionTime: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutDsaSubmissionsInput;
 };
 export type DsaSubmissionUncheckedCreateWithoutDsaQuestionInput = {
@@ -605,7 +605,7 @@ export type DsaSubmissionUncheckedCreateWithoutDsaQuestionInput = {
     testCasesPassed?: number;
     totalTestCases?: number;
     executionTime: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
 };
 export type DsaSubmissionCreateOrConnectWithoutDsaQuestionInput = {
     where: Prisma.DsaSubmissionWhereUniqueInput;
@@ -638,7 +638,7 @@ export type DsaSubmissionCreateManyUserInput = {
     testCasesPassed?: number;
     totalTestCases?: number;
     executionTime: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
 };
 export type DsaSubmissionUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -686,7 +686,7 @@ export type DsaSubmissionCreateManyDsaQuestionInput = {
     testCasesPassed?: number;
     totalTestCases?: number;
     executionTime: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
 };
 export type DsaSubmissionUpdateWithoutDsaQuestionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;

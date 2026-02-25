@@ -75,7 +75,7 @@ model TestCase {
    input          String
    expectedOutput String
    isHidden       Boolean    @default(false)
-   createdAt      DateTime
+   createdAt      DateTime   @default(now())
 }
 
 model McqSubmission {
@@ -87,7 +87,7 @@ model McqSubmission {
     selectedOptionIndex Int
     isCorrect           Boolean
     pointsEarned        Int         @default(0)
-    submittedAt         DateTime
+    submittedAt         DateTime    @default(now())
 
     @@unique([userId , questionId])
 
@@ -106,5 +106,5 @@ model DsaSubmission {
     testCasesPassed Int         @default(0)
     totalTestCases  Int         @default(0)
     executionTime   Int
-    submittedAt     DateTime
+    submittedAt     DateTime    @default(now())
 }

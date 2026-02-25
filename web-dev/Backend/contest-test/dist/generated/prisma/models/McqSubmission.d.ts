@@ -248,7 +248,7 @@ export type McqSubmissionCreateInput = {
     selectedOptionIndex: number;
     isCorrect: boolean;
     pointsEarned?: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutMcqSubmissionsInput;
     mcqQuestion: Prisma.McqQuestionCreateNestedOneWithoutMcqSubmissionsInput;
 };
@@ -259,7 +259,7 @@ export type McqSubmissionUncheckedCreateInput = {
     selectedOptionIndex: number;
     isCorrect: boolean;
     pointsEarned?: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
 };
 export type McqSubmissionUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -286,7 +286,7 @@ export type McqSubmissionCreateManyInput = {
     selectedOptionIndex: number;
     isCorrect: boolean;
     pointsEarned?: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
 };
 export type McqSubmissionUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -432,7 +432,7 @@ export type McqSubmissionCreateWithoutUserInput = {
     selectedOptionIndex: number;
     isCorrect: boolean;
     pointsEarned?: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
     mcqQuestion: Prisma.McqQuestionCreateNestedOneWithoutMcqSubmissionsInput;
 };
 export type McqSubmissionUncheckedCreateWithoutUserInput = {
@@ -441,7 +441,7 @@ export type McqSubmissionUncheckedCreateWithoutUserInput = {
     selectedOptionIndex: number;
     isCorrect: boolean;
     pointsEarned?: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
 };
 export type McqSubmissionCreateOrConnectWithoutUserInput = {
     where: Prisma.McqSubmissionWhereUniqueInput;
@@ -481,7 +481,7 @@ export type McqSubmissionCreateWithoutMcqQuestionInput = {
     selectedOptionIndex: number;
     isCorrect: boolean;
     pointsEarned?: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutMcqSubmissionsInput;
 };
 export type McqSubmissionUncheckedCreateWithoutMcqQuestionInput = {
@@ -490,7 +490,7 @@ export type McqSubmissionUncheckedCreateWithoutMcqQuestionInput = {
     selectedOptionIndex: number;
     isCorrect: boolean;
     pointsEarned?: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
 };
 export type McqSubmissionCreateOrConnectWithoutMcqQuestionInput = {
     where: Prisma.McqSubmissionWhereUniqueInput;
@@ -519,7 +519,7 @@ export type McqSubmissionCreateManyUserInput = {
     selectedOptionIndex: number;
     isCorrect: boolean;
     pointsEarned?: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
 };
 export type McqSubmissionUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -551,7 +551,7 @@ export type McqSubmissionCreateManyMcqQuestionInput = {
     selectedOptionIndex: number;
     isCorrect: boolean;
     pointsEarned?: number;
-    submittedAt: Date | string;
+    submittedAt?: Date | string;
 };
 export type McqSubmissionUpdateWithoutMcqQuestionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;

@@ -2,81 +2,93 @@ import type { Request, Response } from "express";
 import { LoginSchema, SignupSchema } from "../schema/schema.js";
 import { ErrorResponse, SuccessResponse } from "../utility/ApiResponse.js";
 import { prisma } from "../../client.js";
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-export const handleSignup = async (req:Request,res:Response) => {
-    const parsedData = SignupSchema.safeParse(req.body)
+export const handleSignup = async (req: Request, res: Response) => {
+  const parsedData = SignupSchema.safeParse(req.body);
 
-    if (!parsedData.success) {
-        res.status(400).json(ErrorResponse("INVALID_REQUEST"))
-    }
+  if (!parsedData.success) {
+    return res.status(400).json(ErrorResponse("INVALID_REQUEST"));
+  }
 
     try {
-        const existingUser = await prisma.user.findUnique({
-            where: {
-                email:parsedData.data?.email!
-            }
-        })
+      //console.log("Signup body:", req.body);
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email: parsedData.data?.email,
+      },
+    });
 
-        if (existingUser) {
-            res.status(400).json(ErrorResponse("EMAIL_ALREADY_EXISTS"));
-        }
-
-        const hashedPassword = await bcrypt.hash(parsedData.data?.password! , 10)
-
-        const user = await prisma.user.create({
-            data: {
-                email: parsedData.data?.email!,
-                password: hashedPassword,
-                name: parsedData.data?.name!,
-                role: parsedData.data?.role!
-            }, select:{
-                id: true,
-                name: true,
-                email: true,
-                role:true
-            }
-        })
-
-        res.status(201).json(SuccessResponse(user))
-
-    } catch (error) {
-        console.error(error)
-        res.status(500).json(ErrorResponse("server error"))
+    if (existingUser) {
+      return res.status(400).json(ErrorResponse("EMAIL_ALREADY_EXISTS"));
     }
-}
+      
+    //console.log("Existing user:", existingUser);
 
-export const handleLogin = async (req:Request,res:Response) => {
-    const parsedData = LoginSchema.safeParse(req.body)
+    const hashedPassword = await bcrypt.hash(parsedData.data.password, 10);
 
-    if (!parsedData.success) {
-        res.status(400).json(ErrorResponse("INVALID_REQUEST"))
+    const user = await prisma.user.create({
+      data: {
+        email: parsedData.data.email,
+        password: hashedPassword,
+        name: parsedData.data.name,
+        role: parsedData.data.role ?? "contestee",
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+      },
+    });
+
+    return res.status(201).json(SuccessResponse(user));
+  } catch (error:any) {
+     console.error("signup error" , error);
+     
+     return res.status(500).json(ErrorResponse("server error"));
+  }
+};
+
+export const handleLogin = async (req: Request, res: Response) => {
+  const parsedData = LoginSchema.safeParse(req.body);
+
+  if (!parsedData.success) {
+    return res.status(400).json(ErrorResponse("INVALID_REQUEST"));
+  }
+
+  try {
+    const validUser = await prisma.user.findUnique({
+      where: {
+        email: parsedData.data.email,
+      },
+    });
+
+    if (!validUser) {
+      return res.status(401).json(ErrorResponse("INVALID_CREDENTIALS"));
     }
 
-   try {
-     const validUser = await prisma.user.findUnique({
-         where: {
-             email:parsedData.data?.email!
-         }
-     })
- 
-     const validPassword = await bcrypt.compare
-     (parsedData.data?.password! , validUser?.password!)
- 
-     if (!validUser || !validPassword ) {
-         res.status(401).json(ErrorResponse("INVALID_CREDENTIALS"))
-     }
- 
-     const token = jwt.sign({
-         id: validUser?.id,
-         role:validUser?.role
-     }, process.env.JWT_SECRET!)
- 
-     res.status(201).json(SuccessResponse(token))
-   } catch (error) {
-     console.error(error);
-     res.status(500).json(ErrorResponse("server error"));
-   }
+    const validPassword = await bcrypt.compare(
+      parsedData.data.password,
+      validUser.password,
+    );
 
-}
+    if (!validPassword) {
+      return res.status(401).json(ErrorResponse("INVALID_CREDENTIALS"));
+    }
+
+    const token = jwt.sign(
+      {
+        id: validUser.id,
+        role: validUser.role,
+      },
+      process.env.JWT_TOKEN!,
+    );
+
+    return res.status(200).json(SuccessResponse({token}));
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json(ErrorResponse("server error"));
+  }
+};
