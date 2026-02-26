@@ -7,14 +7,22 @@ import type * as Prisma from "../internal/prismaNamespace.js";
 export type ContestModel = runtime.Types.Result.DefaultSelection<Prisma.$ContestPayload>;
 export type AggregateContest = {
     _count: ContestCountAggregateOutputType | null;
+    _avg: ContestAvgAggregateOutputType | null;
+    _sum: ContestSumAggregateOutputType | null;
     _min: ContestMinAggregateOutputType | null;
     _max: ContestMaxAggregateOutputType | null;
+};
+export type ContestAvgAggregateOutputType = {
+    creatorId: number | null;
+};
+export type ContestSumAggregateOutputType = {
+    creatorId: number | null;
 };
 export type ContestMinAggregateOutputType = {
     id: string | null;
     title: string | null;
     description: string | null;
-    creatorId: string | null;
+    creatorId: number | null;
     startTime: Date | null;
     endTime: Date | null;
     createdAt: Date | null;
@@ -23,7 +31,7 @@ export type ContestMaxAggregateOutputType = {
     id: string | null;
     title: string | null;
     description: string | null;
-    creatorId: string | null;
+    creatorId: number | null;
     startTime: Date | null;
     endTime: Date | null;
     createdAt: Date | null;
@@ -37,6 +45,12 @@ export type ContestCountAggregateOutputType = {
     endTime: number;
     createdAt: number;
     _all: number;
+};
+export type ContestAvgAggregateInputType = {
+    creatorId?: true;
+};
+export type ContestSumAggregateInputType = {
+    creatorId?: true;
 };
 export type ContestMinAggregateInputType = {
     id?: true;
@@ -104,6 +118,18 @@ export type ContestAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      *
+     * Select which fields to average
+    **/
+    _avg?: ContestAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: ContestSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
      * Select which fields to find the minimum value
     **/
     _min?: ContestMinAggregateInputType;
@@ -125,6 +151,8 @@ export type ContestGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
     take?: number;
     skip?: number;
     _count?: ContestCountAggregateInputType | true;
+    _avg?: ContestAvgAggregateInputType;
+    _sum?: ContestSumAggregateInputType;
     _min?: ContestMinAggregateInputType;
     _max?: ContestMaxAggregateInputType;
 };
@@ -132,11 +160,13 @@ export type ContestGroupByOutputType = {
     id: string;
     title: string;
     description: string;
-    creatorId: string;
+    creatorId: number;
     startTime: Date;
     endTime: Date;
     createdAt: Date;
     _count: ContestCountAggregateOutputType | null;
+    _avg: ContestAvgAggregateOutputType | null;
+    _sum: ContestSumAggregateOutputType | null;
     _min: ContestMinAggregateOutputType | null;
     _max: ContestMaxAggregateOutputType | null;
 };
@@ -150,7 +180,7 @@ export type ContestWhereInput = {
     id?: Prisma.StringFilter<"Contest"> | string;
     title?: Prisma.StringFilter<"Contest"> | string;
     description?: Prisma.StringFilter<"Contest"> | string;
-    creatorId?: Prisma.StringFilter<"Contest"> | string;
+    creatorId?: Prisma.IntFilter<"Contest"> | number;
     startTime?: Prisma.DateTimeFilter<"Contest"> | Date | string;
     endTime?: Prisma.DateTimeFilter<"Contest"> | Date | string;
     createdAt?: Prisma.DateTimeFilter<"Contest"> | Date | string;
@@ -177,7 +207,7 @@ export type ContestWhereUniqueInput = Prisma.AtLeast<{
     NOT?: Prisma.ContestWhereInput | Prisma.ContestWhereInput[];
     title?: Prisma.StringFilter<"Contest"> | string;
     description?: Prisma.StringFilter<"Contest"> | string;
-    creatorId?: Prisma.StringFilter<"Contest"> | string;
+    creatorId?: Prisma.IntFilter<"Contest"> | number;
     startTime?: Prisma.DateTimeFilter<"Contest"> | Date | string;
     endTime?: Prisma.DateTimeFilter<"Contest"> | Date | string;
     createdAt?: Prisma.DateTimeFilter<"Contest"> | Date | string;
@@ -194,8 +224,10 @@ export type ContestOrderByWithAggregationInput = {
     endTime?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     _count?: Prisma.ContestCountOrderByAggregateInput;
+    _avg?: Prisma.ContestAvgOrderByAggregateInput;
     _max?: Prisma.ContestMaxOrderByAggregateInput;
     _min?: Prisma.ContestMinOrderByAggregateInput;
+    _sum?: Prisma.ContestSumOrderByAggregateInput;
 };
 export type ContestScalarWhereWithAggregatesInput = {
     AND?: Prisma.ContestScalarWhereWithAggregatesInput | Prisma.ContestScalarWhereWithAggregatesInput[];
@@ -204,7 +236,7 @@ export type ContestScalarWhereWithAggregatesInput = {
     id?: Prisma.StringWithAggregatesFilter<"Contest"> | string;
     title?: Prisma.StringWithAggregatesFilter<"Contest"> | string;
     description?: Prisma.StringWithAggregatesFilter<"Contest"> | string;
-    creatorId?: Prisma.StringWithAggregatesFilter<"Contest"> | string;
+    creatorId?: Prisma.IntWithAggregatesFilter<"Contest"> | number;
     startTime?: Prisma.DateTimeWithAggregatesFilter<"Contest"> | Date | string;
     endTime?: Prisma.DateTimeWithAggregatesFilter<"Contest"> | Date | string;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Contest"> | Date | string;
@@ -224,7 +256,7 @@ export type ContestUncheckedCreateInput = {
     id?: string;
     title: string;
     description: string;
-    creatorId: string;
+    creatorId: number;
     startTime: Date | string;
     endTime: Date | string;
     createdAt?: Date | string;
@@ -246,7 +278,7 @@ export type ContestUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
-    creatorId?: Prisma.StringFieldUpdateOperationsInput | string;
+    creatorId?: Prisma.IntFieldUpdateOperationsInput | number;
     startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -257,7 +289,7 @@ export type ContestCreateManyInput = {
     id?: string;
     title: string;
     description: string;
-    creatorId: string;
+    creatorId: number;
     startTime: Date | string;
     endTime: Date | string;
     createdAt?: Date | string;
@@ -274,7 +306,7 @@ export type ContestUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
-    creatorId?: Prisma.StringFieldUpdateOperationsInput | string;
+    creatorId?: Prisma.IntFieldUpdateOperationsInput | number;
     startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -296,6 +328,9 @@ export type ContestCountOrderByAggregateInput = {
     endTime?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
 };
+export type ContestAvgOrderByAggregateInput = {
+    creatorId?: Prisma.SortOrder;
+};
 export type ContestMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     title?: Prisma.SortOrder;
@@ -313,6 +348,9 @@ export type ContestMinOrderByAggregateInput = {
     startTime?: Prisma.SortOrder;
     endTime?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
+};
+export type ContestSumOrderByAggregateInput = {
+    creatorId?: Prisma.SortOrder;
 };
 export type ContestScalarRelationFilter = {
     is?: Prisma.ContestWhereInput;
@@ -428,7 +466,7 @@ export type ContestScalarWhereInput = {
     id?: Prisma.StringFilter<"Contest"> | string;
     title?: Prisma.StringFilter<"Contest"> | string;
     description?: Prisma.StringFilter<"Contest"> | string;
-    creatorId?: Prisma.StringFilter<"Contest"> | string;
+    creatorId?: Prisma.IntFilter<"Contest"> | number;
     startTime?: Prisma.DateTimeFilter<"Contest"> | Date | string;
     endTime?: Prisma.DateTimeFilter<"Contest"> | Date | string;
     createdAt?: Prisma.DateTimeFilter<"Contest"> | Date | string;
@@ -447,7 +485,7 @@ export type ContestUncheckedCreateWithoutMcqQuestionsInput = {
     id?: string;
     title: string;
     description: string;
-    creatorId: string;
+    creatorId: number;
     startTime: Date | string;
     endTime: Date | string;
     createdAt?: Date | string;
@@ -480,7 +518,7 @@ export type ContestUncheckedUpdateWithoutMcqQuestionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
-    creatorId?: Prisma.StringFieldUpdateOperationsInput | string;
+    creatorId?: Prisma.IntFieldUpdateOperationsInput | number;
     startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -500,7 +538,7 @@ export type ContestUncheckedCreateWithoutDsaQuestionsInput = {
     id?: string;
     title: string;
     description: string;
-    creatorId: string;
+    creatorId: number;
     startTime: Date | string;
     endTime: Date | string;
     createdAt?: Date | string;
@@ -533,7 +571,7 @@ export type ContestUncheckedUpdateWithoutDsaQuestionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
-    creatorId?: Prisma.StringFieldUpdateOperationsInput | string;
+    creatorId?: Prisma.IntFieldUpdateOperationsInput | number;
     startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -673,7 +711,7 @@ export type $ContestPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
         id: string;
         title: string;
         description: string;
-        creatorId: string;
+        creatorId: number;
         startTime: Date;
         endTime: Date;
         createdAt: Date;
@@ -1037,7 +1075,7 @@ export interface ContestFieldRefs {
     readonly id: Prisma.FieldRef<"Contest", 'String'>;
     readonly title: Prisma.FieldRef<"Contest", 'String'>;
     readonly description: Prisma.FieldRef<"Contest", 'String'>;
-    readonly creatorId: Prisma.FieldRef<"Contest", 'String'>;
+    readonly creatorId: Prisma.FieldRef<"Contest", 'Int'>;
     readonly startTime: Prisma.FieldRef<"Contest", 'DateTime'>;
     readonly endTime: Prisma.FieldRef<"Contest", 'DateTime'>;
     readonly createdAt: Prisma.FieldRef<"Contest", 'DateTime'>;

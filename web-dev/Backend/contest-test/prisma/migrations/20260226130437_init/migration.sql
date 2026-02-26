@@ -3,7 +3,7 @@ CREATE TYPE "Role" AS ENUM ('creator', 'contestee');
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE "Contest" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "creatorId" TEXT NOT NULL,
+    "creatorId" INTEGER NOT NULL,
     "startTime" TIMESTAMP(3) NOT NULL,
     "endTime" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -69,7 +69,7 @@ CREATE TABLE "TestCase" (
 -- CreateTable
 CREATE TABLE "McqSubmission" (
     "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
     "questionId" TEXT NOT NULL,
     "selectedOptionIndex" INTEGER NOT NULL,
     "isCorrect" BOOLEAN NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE "McqSubmission" (
 -- CreateTable
 CREATE TABLE "DsaSubmission" (
     "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
     "questionId" TEXT NOT NULL,
     "code" TEXT NOT NULL,
     "language" TEXT NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE "DsaSubmission" (
     "testCasesPassed" INTEGER NOT NULL DEFAULT 0,
     "totalTestCases" INTEGER NOT NULL DEFAULT 0,
     "executionTime" INTEGER NOT NULL,
-    "submittedAt" TIMESTAMP(3) NOT NULL,
+    "submittedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "DsaSubmission_pkey" PRIMARY KEY ("id")
 );

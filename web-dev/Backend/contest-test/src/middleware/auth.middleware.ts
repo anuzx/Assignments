@@ -6,7 +6,7 @@ declare global {
   namespace Express {
     export interface Request {
       user: {
-        id: string;
+        id: number;
         role: "creator" | "contestee";
       };
     }
@@ -22,7 +22,7 @@ export const VerifyUser = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_TOKEN!) as {
-      id: string;
+      id: number;
       role: "creator" | "contestee";
     };
   

@@ -13,16 +13,18 @@ export type AggregateMcqSubmission = {
     _max: McqSubmissionMaxAggregateOutputType | null;
 };
 export type McqSubmissionAvgAggregateOutputType = {
+    userId: number | null;
     selectedOptionIndex: number | null;
     pointsEarned: number | null;
 };
 export type McqSubmissionSumAggregateOutputType = {
+    userId: number | null;
     selectedOptionIndex: number | null;
     pointsEarned: number | null;
 };
 export type McqSubmissionMinAggregateOutputType = {
     id: string | null;
-    userId: string | null;
+    userId: number | null;
     questionId: string | null;
     selectedOptionIndex: number | null;
     isCorrect: boolean | null;
@@ -31,7 +33,7 @@ export type McqSubmissionMinAggregateOutputType = {
 };
 export type McqSubmissionMaxAggregateOutputType = {
     id: string | null;
-    userId: string | null;
+    userId: number | null;
     questionId: string | null;
     selectedOptionIndex: number | null;
     isCorrect: boolean | null;
@@ -49,10 +51,12 @@ export type McqSubmissionCountAggregateOutputType = {
     _all: number;
 };
 export type McqSubmissionAvgAggregateInputType = {
+    userId?: true;
     selectedOptionIndex?: true;
     pointsEarned?: true;
 };
 export type McqSubmissionSumAggregateInputType = {
+    userId?: true;
     selectedOptionIndex?: true;
     pointsEarned?: true;
 };
@@ -162,7 +166,7 @@ export type McqSubmissionGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 };
 export type McqSubmissionGroupByOutputType = {
     id: string;
-    userId: string;
+    userId: number;
     questionId: string;
     selectedOptionIndex: number;
     isCorrect: boolean;
@@ -182,7 +186,7 @@ export type McqSubmissionWhereInput = {
     OR?: Prisma.McqSubmissionWhereInput[];
     NOT?: Prisma.McqSubmissionWhereInput | Prisma.McqSubmissionWhereInput[];
     id?: Prisma.StringFilter<"McqSubmission"> | string;
-    userId?: Prisma.StringFilter<"McqSubmission"> | string;
+    userId?: Prisma.IntFilter<"McqSubmission"> | number;
     questionId?: Prisma.StringFilter<"McqSubmission"> | string;
     selectedOptionIndex?: Prisma.IntFilter<"McqSubmission"> | number;
     isCorrect?: Prisma.BoolFilter<"McqSubmission"> | boolean;
@@ -208,7 +212,7 @@ export type McqSubmissionWhereUniqueInput = Prisma.AtLeast<{
     AND?: Prisma.McqSubmissionWhereInput | Prisma.McqSubmissionWhereInput[];
     OR?: Prisma.McqSubmissionWhereInput[];
     NOT?: Prisma.McqSubmissionWhereInput | Prisma.McqSubmissionWhereInput[];
-    userId?: Prisma.StringFilter<"McqSubmission"> | string;
+    userId?: Prisma.IntFilter<"McqSubmission"> | number;
     questionId?: Prisma.StringFilter<"McqSubmission"> | string;
     selectedOptionIndex?: Prisma.IntFilter<"McqSubmission"> | number;
     isCorrect?: Prisma.BoolFilter<"McqSubmission"> | boolean;
@@ -236,7 +240,7 @@ export type McqSubmissionScalarWhereWithAggregatesInput = {
     OR?: Prisma.McqSubmissionScalarWhereWithAggregatesInput[];
     NOT?: Prisma.McqSubmissionScalarWhereWithAggregatesInput | Prisma.McqSubmissionScalarWhereWithAggregatesInput[];
     id?: Prisma.StringWithAggregatesFilter<"McqSubmission"> | string;
-    userId?: Prisma.StringWithAggregatesFilter<"McqSubmission"> | string;
+    userId?: Prisma.IntWithAggregatesFilter<"McqSubmission"> | number;
     questionId?: Prisma.StringWithAggregatesFilter<"McqSubmission"> | string;
     selectedOptionIndex?: Prisma.IntWithAggregatesFilter<"McqSubmission"> | number;
     isCorrect?: Prisma.BoolWithAggregatesFilter<"McqSubmission"> | boolean;
@@ -254,7 +258,7 @@ export type McqSubmissionCreateInput = {
 };
 export type McqSubmissionUncheckedCreateInput = {
     id?: string;
-    userId: string;
+    userId: number;
     questionId: string;
     selectedOptionIndex: number;
     isCorrect: boolean;
@@ -272,7 +276,7 @@ export type McqSubmissionUpdateInput = {
 };
 export type McqSubmissionUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.IntFieldUpdateOperationsInput | number;
     questionId?: Prisma.StringFieldUpdateOperationsInput | string;
     selectedOptionIndex?: Prisma.IntFieldUpdateOperationsInput | number;
     isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -281,7 +285,7 @@ export type McqSubmissionUncheckedUpdateInput = {
 };
 export type McqSubmissionCreateManyInput = {
     id?: string;
-    userId: string;
+    userId: number;
     questionId: string;
     selectedOptionIndex: number;
     isCorrect: boolean;
@@ -297,7 +301,7 @@ export type McqSubmissionUpdateManyMutationInput = {
 };
 export type McqSubmissionUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.IntFieldUpdateOperationsInput | number;
     questionId?: Prisma.StringFieldUpdateOperationsInput | string;
     selectedOptionIndex?: Prisma.IntFieldUpdateOperationsInput | number;
     isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -313,7 +317,7 @@ export type McqSubmissionOrderByRelationAggregateInput = {
     _count?: Prisma.SortOrder;
 };
 export type McqSubmissionUserIdQuestionIdCompoundUniqueInput = {
-    userId: string;
+    userId: number;
     questionId: string;
 };
 export type McqSubmissionCountOrderByAggregateInput = {
@@ -326,6 +330,7 @@ export type McqSubmissionCountOrderByAggregateInput = {
     submittedAt?: Prisma.SortOrder;
 };
 export type McqSubmissionAvgOrderByAggregateInput = {
+    userId?: Prisma.SortOrder;
     selectedOptionIndex?: Prisma.SortOrder;
     pointsEarned?: Prisma.SortOrder;
 };
@@ -348,6 +353,7 @@ export type McqSubmissionMinOrderByAggregateInput = {
     submittedAt?: Prisma.SortOrder;
 };
 export type McqSubmissionSumOrderByAggregateInput = {
+    userId?: Prisma.SortOrder;
     selectedOptionIndex?: Prisma.SortOrder;
     pointsEarned?: Prisma.SortOrder;
 };
@@ -469,7 +475,7 @@ export type McqSubmissionScalarWhereInput = {
     OR?: Prisma.McqSubmissionScalarWhereInput[];
     NOT?: Prisma.McqSubmissionScalarWhereInput | Prisma.McqSubmissionScalarWhereInput[];
     id?: Prisma.StringFilter<"McqSubmission"> | string;
-    userId?: Prisma.StringFilter<"McqSubmission"> | string;
+    userId?: Prisma.IntFilter<"McqSubmission"> | number;
     questionId?: Prisma.StringFilter<"McqSubmission"> | string;
     selectedOptionIndex?: Prisma.IntFilter<"McqSubmission"> | number;
     isCorrect?: Prisma.BoolFilter<"McqSubmission"> | boolean;
@@ -486,7 +492,7 @@ export type McqSubmissionCreateWithoutMcqQuestionInput = {
 };
 export type McqSubmissionUncheckedCreateWithoutMcqQuestionInput = {
     id?: string;
-    userId: string;
+    userId: number;
     selectedOptionIndex: number;
     isCorrect: boolean;
     pointsEarned?: number;
@@ -547,7 +553,7 @@ export type McqSubmissionUncheckedUpdateManyWithoutUserInput = {
 };
 export type McqSubmissionCreateManyMcqQuestionInput = {
     id?: string;
-    userId: string;
+    userId: number;
     selectedOptionIndex: number;
     isCorrect: boolean;
     pointsEarned?: number;
@@ -563,7 +569,7 @@ export type McqSubmissionUpdateWithoutMcqQuestionInput = {
 };
 export type McqSubmissionUncheckedUpdateWithoutMcqQuestionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.IntFieldUpdateOperationsInput | number;
     selectedOptionIndex?: Prisma.IntFieldUpdateOperationsInput | number;
     isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     pointsEarned?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -571,7 +577,7 @@ export type McqSubmissionUncheckedUpdateWithoutMcqQuestionInput = {
 };
 export type McqSubmissionUncheckedUpdateManyWithoutMcqQuestionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.IntFieldUpdateOperationsInput | number;
     selectedOptionIndex?: Prisma.IntFieldUpdateOperationsInput | number;
     isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     pointsEarned?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -640,7 +646,7 @@ export type $McqSubmissionPayload<ExtArgs extends runtime.Types.Extensions.Inter
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
-        userId: string;
+        userId: number;
         questionId: string;
         selectedOptionIndex: number;
         isCorrect: boolean;
@@ -1003,7 +1009,7 @@ export interface Prisma__McqSubmissionClient<T, Null = never, ExtArgs extends ru
  */
 export interface McqSubmissionFieldRefs {
     readonly id: Prisma.FieldRef<"McqSubmission", 'String'>;
-    readonly userId: Prisma.FieldRef<"McqSubmission", 'String'>;
+    readonly userId: Prisma.FieldRef<"McqSubmission", 'Int'>;
     readonly questionId: Prisma.FieldRef<"McqSubmission", 'String'>;
     readonly selectedOptionIndex: Prisma.FieldRef<"McqSubmission", 'Int'>;
     readonly isCorrect: Prisma.FieldRef<"McqSubmission", 'Boolean'>;

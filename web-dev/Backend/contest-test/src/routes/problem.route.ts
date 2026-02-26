@@ -5,6 +5,6 @@ import { getDsaProblem, submitDsaSolution } from "../controllers/problem.control
 const router = Router()
 
 router.get("/:problemId", VerifyUser, getDsaProblem);
-router.post("/:problemId/submit", VerifyUser,AccessibleBy(["contestee"])  ,submitDsaSolution);
+router.post("/:problemId/submit", VerifyUser ,submitDsaSolution);
 
 export default router

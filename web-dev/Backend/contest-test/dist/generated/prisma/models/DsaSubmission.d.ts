@@ -13,12 +13,14 @@ export type AggregateDsaSubmission = {
     _max: DsaSubmissionMaxAggregateOutputType | null;
 };
 export type DsaSubmissionAvgAggregateOutputType = {
+    userId: number | null;
     pointsEarned: number | null;
     testCasesPassed: number | null;
     totalTestCases: number | null;
     executionTime: number | null;
 };
 export type DsaSubmissionSumAggregateOutputType = {
+    userId: number | null;
     pointsEarned: number | null;
     testCasesPassed: number | null;
     totalTestCases: number | null;
@@ -26,7 +28,7 @@ export type DsaSubmissionSumAggregateOutputType = {
 };
 export type DsaSubmissionMinAggregateOutputType = {
     id: string | null;
-    userId: string | null;
+    userId: number | null;
     questionId: string | null;
     code: string | null;
     language: string | null;
@@ -39,7 +41,7 @@ export type DsaSubmissionMinAggregateOutputType = {
 };
 export type DsaSubmissionMaxAggregateOutputType = {
     id: string | null;
-    userId: string | null;
+    userId: number | null;
     questionId: string | null;
     code: string | null;
     language: string | null;
@@ -65,12 +67,14 @@ export type DsaSubmissionCountAggregateOutputType = {
     _all: number;
 };
 export type DsaSubmissionAvgAggregateInputType = {
+    userId?: true;
     pointsEarned?: true;
     testCasesPassed?: true;
     totalTestCases?: true;
     executionTime?: true;
 };
 export type DsaSubmissionSumAggregateInputType = {
+    userId?: true;
     pointsEarned?: true;
     testCasesPassed?: true;
     totalTestCases?: true;
@@ -194,7 +198,7 @@ export type DsaSubmissionGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 };
 export type DsaSubmissionGroupByOutputType = {
     id: string;
-    userId: string;
+    userId: number;
     questionId: string;
     code: string;
     language: string;
@@ -218,7 +222,7 @@ export type DsaSubmissionWhereInput = {
     OR?: Prisma.DsaSubmissionWhereInput[];
     NOT?: Prisma.DsaSubmissionWhereInput | Prisma.DsaSubmissionWhereInput[];
     id?: Prisma.StringFilter<"DsaSubmission"> | string;
-    userId?: Prisma.StringFilter<"DsaSubmission"> | string;
+    userId?: Prisma.IntFilter<"DsaSubmission"> | number;
     questionId?: Prisma.StringFilter<"DsaSubmission"> | string;
     code?: Prisma.StringFilter<"DsaSubmission"> | string;
     language?: Prisma.StringFilter<"DsaSubmission"> | string;
@@ -251,7 +255,7 @@ export type DsaSubmissionWhereUniqueInput = Prisma.AtLeast<{
     AND?: Prisma.DsaSubmissionWhereInput | Prisma.DsaSubmissionWhereInput[];
     OR?: Prisma.DsaSubmissionWhereInput[];
     NOT?: Prisma.DsaSubmissionWhereInput | Prisma.DsaSubmissionWhereInput[];
-    userId?: Prisma.StringFilter<"DsaSubmission"> | string;
+    userId?: Prisma.IntFilter<"DsaSubmission"> | number;
     questionId?: Prisma.StringFilter<"DsaSubmission"> | string;
     code?: Prisma.StringFilter<"DsaSubmission"> | string;
     language?: Prisma.StringFilter<"DsaSubmission"> | string;
@@ -287,7 +291,7 @@ export type DsaSubmissionScalarWhereWithAggregatesInput = {
     OR?: Prisma.DsaSubmissionScalarWhereWithAggregatesInput[];
     NOT?: Prisma.DsaSubmissionScalarWhereWithAggregatesInput | Prisma.DsaSubmissionScalarWhereWithAggregatesInput[];
     id?: Prisma.StringWithAggregatesFilter<"DsaSubmission"> | string;
-    userId?: Prisma.StringWithAggregatesFilter<"DsaSubmission"> | string;
+    userId?: Prisma.IntWithAggregatesFilter<"DsaSubmission"> | number;
     questionId?: Prisma.StringWithAggregatesFilter<"DsaSubmission"> | string;
     code?: Prisma.StringWithAggregatesFilter<"DsaSubmission"> | string;
     language?: Prisma.StringWithAggregatesFilter<"DsaSubmission"> | string;
@@ -313,7 +317,7 @@ export type DsaSubmissionCreateInput = {
 };
 export type DsaSubmissionUncheckedCreateInput = {
     id?: string;
-    userId: string;
+    userId: number;
     questionId: string;
     code: string;
     language: string;
@@ -339,7 +343,7 @@ export type DsaSubmissionUpdateInput = {
 };
 export type DsaSubmissionUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.IntFieldUpdateOperationsInput | number;
     questionId?: Prisma.StringFieldUpdateOperationsInput | string;
     code?: Prisma.StringFieldUpdateOperationsInput | string;
     language?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -352,7 +356,7 @@ export type DsaSubmissionUncheckedUpdateInput = {
 };
 export type DsaSubmissionCreateManyInput = {
     id?: string;
-    userId: string;
+    userId: number;
     questionId: string;
     code: string;
     language: string;
@@ -376,7 +380,7 @@ export type DsaSubmissionUpdateManyMutationInput = {
 };
 export type DsaSubmissionUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.IntFieldUpdateOperationsInput | number;
     questionId?: Prisma.StringFieldUpdateOperationsInput | string;
     code?: Prisma.StringFieldUpdateOperationsInput | string;
     language?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -409,6 +413,7 @@ export type DsaSubmissionCountOrderByAggregateInput = {
     submittedAt?: Prisma.SortOrder;
 };
 export type DsaSubmissionAvgOrderByAggregateInput = {
+    userId?: Prisma.SortOrder;
     pointsEarned?: Prisma.SortOrder;
     testCasesPassed?: Prisma.SortOrder;
     totalTestCases?: Prisma.SortOrder;
@@ -441,6 +446,7 @@ export type DsaSubmissionMinOrderByAggregateInput = {
     submittedAt?: Prisma.SortOrder;
 };
 export type DsaSubmissionSumOrderByAggregateInput = {
+    userId?: Prisma.SortOrder;
     pointsEarned?: Prisma.SortOrder;
     testCasesPassed?: Prisma.SortOrder;
     totalTestCases?: Prisma.SortOrder;
@@ -572,7 +578,7 @@ export type DsaSubmissionScalarWhereInput = {
     OR?: Prisma.DsaSubmissionScalarWhereInput[];
     NOT?: Prisma.DsaSubmissionScalarWhereInput | Prisma.DsaSubmissionScalarWhereInput[];
     id?: Prisma.StringFilter<"DsaSubmission"> | string;
-    userId?: Prisma.StringFilter<"DsaSubmission"> | string;
+    userId?: Prisma.IntFilter<"DsaSubmission"> | number;
     questionId?: Prisma.StringFilter<"DsaSubmission"> | string;
     code?: Prisma.StringFilter<"DsaSubmission"> | string;
     language?: Prisma.StringFilter<"DsaSubmission"> | string;
@@ -597,7 +603,7 @@ export type DsaSubmissionCreateWithoutDsaQuestionInput = {
 };
 export type DsaSubmissionUncheckedCreateWithoutDsaQuestionInput = {
     id?: string;
-    userId: string;
+    userId: number;
     code: string;
     language: string;
     status: string;
@@ -678,7 +684,7 @@ export type DsaSubmissionUncheckedUpdateManyWithoutUserInput = {
 };
 export type DsaSubmissionCreateManyDsaQuestionInput = {
     id?: string;
-    userId: string;
+    userId: number;
     code: string;
     language: string;
     status: string;
@@ -702,7 +708,7 @@ export type DsaSubmissionUpdateWithoutDsaQuestionInput = {
 };
 export type DsaSubmissionUncheckedUpdateWithoutDsaQuestionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.IntFieldUpdateOperationsInput | number;
     code?: Prisma.StringFieldUpdateOperationsInput | string;
     language?: Prisma.StringFieldUpdateOperationsInput | string;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -714,7 +720,7 @@ export type DsaSubmissionUncheckedUpdateWithoutDsaQuestionInput = {
 };
 export type DsaSubmissionUncheckedUpdateManyWithoutDsaQuestionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.IntFieldUpdateOperationsInput | number;
     code?: Prisma.StringFieldUpdateOperationsInput | string;
     language?: Prisma.StringFieldUpdateOperationsInput | string;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -803,7 +809,7 @@ export type $DsaSubmissionPayload<ExtArgs extends runtime.Types.Extensions.Inter
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
-        userId: string;
+        userId: number;
         questionId: string;
         code: string;
         language: string;
@@ -1170,7 +1176,7 @@ export interface Prisma__DsaSubmissionClient<T, Null = never, ExtArgs extends ru
  */
 export interface DsaSubmissionFieldRefs {
     readonly id: Prisma.FieldRef<"DsaSubmission", 'String'>;
-    readonly userId: Prisma.FieldRef<"DsaSubmission", 'String'>;
+    readonly userId: Prisma.FieldRef<"DsaSubmission", 'Int'>;
     readonly questionId: Prisma.FieldRef<"DsaSubmission", 'String'>;
     readonly code: Prisma.FieldRef<"DsaSubmission", 'String'>;
     readonly language: Prisma.FieldRef<"DsaSubmission", 'String'>;

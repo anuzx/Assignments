@@ -15,7 +15,7 @@ enum Role{
 }
 
 model User {
-  id             String     @id      @default(uuid())
+  id             Int     @id      @default(autoincrement())
   name           String   
   email          String     @unique
   password       String
@@ -30,7 +30,7 @@ model Contest {
   id            String      @id      @default(uuid())
   title         String
   description   String
-  creatorId     String
+  creatorId     Int
   creator       User        @relation(fields: [creatorId] , references: [id])
   startTime     DateTime
   endTime       DateTime
@@ -50,7 +50,6 @@ model McqQuestion {
   points              Int         @default(1)
   createdAt           DateTime    @default(now())
   mcqSubmissions      McqSubmission[]
- 
 }
 
 model DsaProblem {
@@ -80,7 +79,7 @@ model TestCase {
 
 model McqSubmission {
     id                  String      @id      @default(uuid())
-    userId              String
+    userId              Int
     user                User        @relation(fields: [userId], references: [id])
     questionId          String
     mcqQuestion         McqQuestion @relation(fields: [questionId], references: [id])
@@ -94,8 +93,8 @@ model McqSubmission {
 }
 
 model DsaSubmission {
-    id             String      @id      @default(uuid())
-    userId          String
+    id              String      @id      @default(uuid())
+    userId          Int
     user            User        @relation(fields: [userId], references: [id])
     questionId      String
     dsaQuestion     DsaProblem @relation(fields: [questionId], references: [id])

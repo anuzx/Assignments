@@ -387,13 +387,6 @@ export type McqQuestionUncheckedUpdateManyWithoutContestNestedInput = {
     updateMany?: Prisma.McqQuestionUpdateManyWithWhereWithoutContestInput | Prisma.McqQuestionUpdateManyWithWhereWithoutContestInput[];
     deleteMany?: Prisma.McqQuestionScalarWhereInput | Prisma.McqQuestionScalarWhereInput[];
 };
-export type IntFieldUpdateOperationsInput = {
-    set?: number;
-    increment?: number;
-    decrement?: number;
-    multiply?: number;
-    divide?: number;
-};
 export type McqQuestionCreateNestedOneWithoutMcqSubmissionsInput = {
     create?: Prisma.XOR<Prisma.McqQuestionCreateWithoutMcqSubmissionsInput, Prisma.McqQuestionUncheckedCreateWithoutMcqSubmissionsInput>;
     connectOrCreate?: Prisma.McqQuestionCreateOrConnectWithoutMcqSubmissionsInput;

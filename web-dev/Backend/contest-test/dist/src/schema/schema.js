@@ -15,14 +15,16 @@ export const ContestSchema = z.object({
     startTime: z.coerce.date(),
     endTime: z.coerce.date(),
 });
-export const McqSchema = z.object({
+export const McqSchema = z
+    .object({
     questionText: z.string(),
-    options: z.array(z.string()).default([]),
-    correctOptionIndex: z.number().positive(),
-    points: z.number().positive()
-});
+    options: z.array(z.string()).min(2),
+    correctOptionIndex: z.number().int().min(0),
+    points: z.number().positive(),
+})
+    .refine((data) => data.correctOptionIndex < data.options.length);
 export const McqSubmissionSchema = z.object({
-    selectedOptionIndex: z.number().positive()
+    selectedOptionIndex: z.number().int().min(0)
 });
 export const DsaSchema = z.object({
     title: z.string(),
@@ -34,11 +36,11 @@ export const DsaSchema = z.object({
     testCases: z.array(z.object({
         input: z.string(),
         expectedOutput: z.string(),
-        isHidden: z.boolean().optional().default(false),
-    })),
+        isHidden: z.boolean().default(false),
+    })).min(1)
 });
 export const DsaSolutionSchema = z.object({
-    code: z.string(),
+    code: z.string().nonempty(),
     language: z.string()
 });
 //# sourceMappingURL=schema.js.map

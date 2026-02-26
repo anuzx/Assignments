@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "DsaSubmission" ALTER COLUMN "submittedAt" SET DEFAULT CURRENT_TIMESTAMP;

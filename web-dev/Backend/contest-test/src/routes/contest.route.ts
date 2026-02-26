@@ -11,7 +11,11 @@ router.get("/:contestId" ,VerifyUser ,getContestDetails)
 
 router.post("/:contestId/mcq", VerifyUser, AccessibleBy(["creator"]), addMcq);
 
-router.post("/:contestId/mcq/:questionId/submit", VerifyUser, AccessibleBy(["contestee"]), submitMcq)
+router.post(
+  "/:contestId/mcq/:questionId/submit",
+  VerifyUser,
+  submitMcq,
+);
 
 router.post("/:contestId/dsa", VerifyUser, AccessibleBy(["creator"]), addDsaQues)
 

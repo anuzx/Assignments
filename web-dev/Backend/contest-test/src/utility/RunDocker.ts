@@ -1,54 +1,51 @@
-import {spawn} from "child_process"
+import { spawn } from "child_process";
+import path from "path";
 
-function runDocker(
-  input: string,
-  tempDir: string,
-  timeLimit: number,
-): Promise<string> {
+function runDocker(tempDir: string, timeLimit: number): Promise<string> {
+  const absolutePath = path.resolve(tempDir);
+
   return new Promise((resolve, reject) => {
-    const dockerProcess = spawn("docker", [
+    const docker = spawn("docker", [
       "run",
       "--rm",
       "--memory=128m",
       "--cpus=0.5",
       "--network=none",
       "-v",
-      `${tempDir}:/app`,
-      "code-runner",
+      `${absolutePath}:/app`,
+      "code-runer",
     ]);
 
-    let output = "";
-    let errorOutput = "";
+    let stdout = "";
+    let stderr = "";
 
-    dockerProcess.stdout.on("data", (data) => {
-      output += data.toString();
+    const timeout = setTimeout(() => {
+      docker.kill("SIGKILL");
+      reject(new Error("TLE"));
+    }, timeLimit);
+
+    docker.stdout.on("data", (data) => {
+      stdout += data.toString();
     });
 
-    dockerProcess.stderr.on("data", (data) => {
-      errorOutput += data.toString();
+    docker.stderr.on("data", (data) => {
+      stderr += data.toString();
     });
 
-    dockerProcess.on("error", (err) => {
-      reject(err);
-    });
+    docker.on("close", (code) => {
+      clearTimeout(timeout);
 
-    dockerProcess.on("close", (code) => {
       if (code === 0) {
-        resolve(output);
+        resolve(stdout);
       } else {
-        reject(new Error(errorOutput || "Runtime Error"));
+        reject(new Error(stderr || "Runtime Error"));
       }
     });
 
-    // 🔹 Send input
-    dockerProcess.stdin.write(input);
-    dockerProcess.stdin.end();
-
-    // 🔹 Timeout handling
-    setTimeout(() => {
-      dockerProcess.kill();
-      reject(new Error("TLE"));
-    }, timeLimit);
+    docker.on("error", (err) => {
+      clearTimeout(timeout);
+      reject(err);
+    });
   });
 }
 

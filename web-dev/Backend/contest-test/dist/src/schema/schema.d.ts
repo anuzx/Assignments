@@ -20,7 +20,7 @@ export declare const ContestSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const McqSchema: z.ZodObject<{
     questionText: z.ZodString;
-    options: z.ZodDefault<z.ZodArray<z.ZodString>>;
+    options: z.ZodArray<z.ZodString>;
     correctOptionIndex: z.ZodNumber;
     points: z.ZodNumber;
 }, z.core.$strip>;
@@ -37,7 +37,7 @@ export declare const DsaSchema: z.ZodObject<{
     testCases: z.ZodArray<z.ZodObject<{
         input: z.ZodString;
         expectedOutput: z.ZodString;
-        isHidden: z.ZodDefault<z.ZodOptional<z.ZodBoolean>>;
+        isHidden: z.ZodDefault<z.ZodBoolean>;
     }, z.core.$strip>>;
 }, z.core.$strip>;
 export declare const DsaSolutionSchema: z.ZodObject<{

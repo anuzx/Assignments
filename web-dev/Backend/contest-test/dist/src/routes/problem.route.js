@@ -1,0 +1,8 @@
+import { Router } from "express";
+import { AccessibleBy, VerifyUser } from "../middleware/auth.middleware.js";
+import { getDsaProblem, submitDsaSolution } from "../controllers/problem.controller.js";
+const router = Router();
+router.get("/:problemId", VerifyUser, getDsaProblem);
+router.post("/:problemId/submit", VerifyUser, submitDsaSolution);
+export default router;
+//# sourceMappingURL=problem.route.js.map

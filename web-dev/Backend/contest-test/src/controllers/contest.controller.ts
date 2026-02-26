@@ -150,14 +150,38 @@ export const submitMcq = async (req: Request, res: Response) => {
     return res.status(400).json(ErrorResponse("CONTEST_NOT_ACTIVE"));
   }
 
-  const existQues = await prisma.mcqQuestion.findUnique({
-    where: {
-      id: questionId as string,
-    },
-  });
+   const now = new Date();
+
+   if (existContest.startTime > now || existContest.endTime < now) {
+     return res.status(400).json(ErrorResponse("CONTEST_NOT_ACTIVE"));
+   }
+
+  if (req.user.role === "creator" && existContest.creatorId === req.user.id) {
+    return res.status(403).json(ErrorResponse("FORBIDDEN"));
+  }
+  
+    const existQues = await prisma.mcqQuestion.findFirst({
+      where: {
+        id: questionId as string,
+        contestId: contestId as string,
+      },
+    });
 
   if (!existQues) {
     return res.status(404).json(ErrorResponse("QUESTION_NOT_FOUND"));
+  }
+
+  const existingSubmission = await prisma.mcqSubmission.findUnique({
+    where: {
+      userId_questionId: {
+        userId: req.user.id,
+        questionId: questionId as string,
+      },
+    },
+  });
+
+  if (existingSubmission) {
+    return res.status(400).json(ErrorResponse("ALREADY_SUBMITTED"));
   }
 
   const isCorrect =
@@ -178,24 +202,39 @@ export const submitMcq = async (req: Request, res: Response) => {
         isCorrect: true,
         pointsEarned: true,
       },
+
     });
+
+    
 
     return res.status(201).json(SuccessResponse(SubmitMcq));
   } catch (error) {
     console.error(error);
-    return res.status(400).json(ErrorResponse("ALREADY_SUBMITTED"));
+    return res.status(500).json(ErrorResponse("server error"));
   }
 };
 
 export const addDsaQues = async (req: Request, res: Response) => {
   const parsedData = DsaSchema.safeParse(req.body);
 
+  const {contestId} = req.params 
+
   if (!parsedData.success) {
     return res.status(400).json(ErrorResponse("INVALID_REQUEST"));
   }
 
-  const { title, description, tags, points, timeLimit, memoryLimit } =
+  const { title, description, tags, points, timeLimit, memoryLimit ,testCases } =
     parsedData.data;
+  
+  const contest = await prisma.contest.findUnique({
+    where: {
+      id:contestId as string
+    }
+  })
+
+  if (!contest) {
+    return res.status(404).json(ErrorResponse("CONTEST_NOT_FOUND"));
+  }
 
   const dsaQues = await prisma.dsaProblem.create({
     data: {
@@ -206,21 +245,22 @@ export const addDsaQues = async (req: Request, res: Response) => {
       timeLimit,
       memoryLimit,
       contest: {
-        connect: { id: req.params.contestId as string },
+        connect: { id: contestId as string },
       },
       testCases: {
-        create: parsedData.data.testCases,
+        create:testCases
+        
       },
     },
     select: {
       id: true,
-      title: true,
-      points: true,
+     contestId:true
     },
   });
 
   return res.status(201).json(SuccessResponse(dsaQues));
 };
+
 
 export const getContestLeaderboard = async (req: Request, res: Response) => {
   try {
@@ -276,11 +316,11 @@ export const getContestLeaderboard = async (req: Request, res: Response) => {
 
     //  Build user map
     const userMap = new Map<
-      string,
+      number,
       { name: string; mcqPoints: number; dsaBest: Map<string, number> }
     >();
 
-    const getOrCreateUser = (userId: string, name: string) => {
+    const getOrCreateUser = (userId: number, name: string) => {
       if (!userMap.has(userId)) {
         userMap.set(userId, {
           name,
@@ -325,7 +365,7 @@ export const getContestLeaderboard = async (req: Request, res: Response) => {
     leaderboard.sort((a, b) => b.totalPoints - a.totalPoints);
 
     //  Assign ranks
-    let rank = 1;
+    let rank:number = 1;
 
     const rankedLeaderboard = leaderboard.map((entry, index) => {
      const prev = leaderboard[index - 1];
