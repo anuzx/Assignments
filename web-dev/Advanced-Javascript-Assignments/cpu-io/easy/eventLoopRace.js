@@ -8,6 +8,13 @@
 //
 
 
-function eventLoopRace() {}
+function eventLoopRace() {
+  
+    //sync code 
+    //micro task
+    //macro task
+    
+
+}
 
 module.exports = eventLoopRace;
