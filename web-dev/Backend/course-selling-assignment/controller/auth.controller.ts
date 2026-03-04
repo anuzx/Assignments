@@ -22,7 +22,7 @@ export const handleSignup = async (req: Request, res: Response) => {
         email: parsedData.data?.email,
         password: hashedPass,
         name: parsedData.data?.name,
-        role:parsedData.data.role
+        role: parsedData.data.role
       },
 
     });
@@ -52,28 +52,28 @@ export const handleLogin = async (req: Request, res: Response) => {
         email: parsedData.data?.email,
       },
     });
-      
+
     if (!existingUser) {
       return res.json({
         message: "invalid user",
       });
     }
-      
+
     const unhasedPass = await bcrypt.compare(
       parsedData.data?.password,
       existingUser?.password,
     );
-      
-      if (!unhasedPass) {
-          return res.json({
-              message:"invalid password"
-          })
-      }
+
+    if (!unhasedPass) {
+      return res.json({
+        message: "invalid password"
+      })
+    }
 
     const token = jwt.sign(
       {
         id: existingUser.id,
-        role:existingUser.role
+        role: existingUser.role
       },
       process.env.JWT_SECRET!,
     );

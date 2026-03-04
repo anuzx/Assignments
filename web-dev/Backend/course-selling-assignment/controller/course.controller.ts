@@ -31,7 +31,7 @@ export const createCourses = async (req: Request, res: Response) => {
   }
 };
 
-export const PublicPosts = async (req: Request, res: Response) => {
+export const PublicPosts = async (_req: Request, res: Response) => {
   try {
     const courses = await prisma.course.findMany({});
 
@@ -57,7 +57,7 @@ export const getCoursesWithLessons = async (req: Request, res: Response) => {
     }
 
     res.json(courses);
-  } catch (error) {}
+  } catch (error) { }
 };
 
 export const updateCourse = async (req: Request, res: Response) => {
