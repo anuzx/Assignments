@@ -12,9 +12,31 @@ const app = express();
 // clears every one second
 
 let numberOfRequestsForUser = {};
+
 setInterval(() => {
-    numberOfRequestsForUser = {};
+  numberOfRequestsForUser = {};
 }, 1000)
+
+
+app.use((req, res, next) => {
+  const userId = req.header("user-id")
+
+  if (!userId) {
+    return res.status(404).json({ message: "user-id not found" })
+  }
+
+  if (!numberOfRequestsForUser[userId]) {
+    numberOfRequestsForUser[userId] = 0
+  }
+
+  numberOfRequestsForUser[userId]++
+
+  if (numberOfRequestsForUser[userId] > 5) {
+    return res.status(404).json({ message: "Too many requests" })
+  }
+  next()
+})
+
 
 app.get('/user', function(req, res) {
   res.status(200).json({ name: 'john' });

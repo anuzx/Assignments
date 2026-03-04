@@ -37,13 +37,10 @@ function signJwt(username, password) {
  */
 function verifyJwt(token) {
   // Your code here
-  const verifyToken = jwt.verify({
-    token
-  }, jwtPassword)
-
-  if (verifyToken) {
+  try {
+    const verifyToken = jwt.verify(token, jwtPassword)
     return true
-  } else {
+  } catch (error) {
     return false
   }
 }
