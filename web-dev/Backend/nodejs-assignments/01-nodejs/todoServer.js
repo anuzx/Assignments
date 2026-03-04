@@ -39,11 +39,85 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  
-  const app = express();
-  
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+app.use(bodyParser.json());
+
+let id = 1
+let todos = []  //{id : number , title: string , description:string}
+
+
+app.route("/todos")
+  .get((_req, res) => {
+
+    return res.status(200).json(todos)
+  })
+  .post((req, res) => {
+    const { title, completed, description } = req.body
+
+    const todo = {
+      id: id,
+      title,
+      completed,
+      description,
+    }
+
+    todos.push(todo)
+    id++
+
+    return res.status(201).json({ id: todo.id })
+  })
+
+app.route("/todos/:id")
+  .get((req, res) => {
+    const id = req.params.id
+
+    const todo = todos.find(t => t.id === Number(id))
+
+    if (!todo) {
+      return res.status(404).json({ message: "not found" })
+    }
+
+    return res.status(200).json(todo)
+  })
+  .put((req, res) => {
+    const { title, completed, description } = req.body
+    const id = Number(req.params.id)
+
+    const exist = todos.find(t => t.id === id)
+
+    if (!exist) {
+      return res.status(404).send()
+    }
+
+    const todo = {
+      id: id,
+      title,
+      completed,
+      description
+    }
+
+    return res.status(200).json(todo)
+  })
+  .delete((req, res) => {
+    const id = req.params.id
+
+    const exist = todos.find(t => t.id === Number(id))
+
+    if (!exist) {
+      return res.status(404)
+    }
+
+    todos = todos.filter(t => t.id !== Number(id))
+
+    return res.json(200)
+  })
+
+app.use((_req, res, _next) => {
+  res.status(404).send()
+});
+
+module.exports = app;
