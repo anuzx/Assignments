@@ -9,11 +9,22 @@
 
 
 class CallbackPool {
-  constructor(limit) {}
+  constructor(limit) {
+    this.limit = limit
+  }
 
-  run(task, onComplete) {}
+  run(task, onComplete) {
+    if (task === this.limit) {
+      return new Error("limit reached")
 
-  _next() {}
+    }
+
+    if (onComplete) {
+      this._next()
+    }
+  }
+
+  _next() { }
 }
 
 module.exports = CallbackPool;
