@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "qwerty",
+    "email": "icarus11@gmail.com",
+    "password": "123123123"
+  },
+  {
+    "id": 2,
+    "name": "qwerty",
+    "email": "icarus101@gmail.com",
+    "password": "123123123"
+  },
+  {
+    "id": 3,
+    "name": "qwerty",
+    "email": "icarus1010@gmail.com",
+    "password": "123123123"
+  }
+]

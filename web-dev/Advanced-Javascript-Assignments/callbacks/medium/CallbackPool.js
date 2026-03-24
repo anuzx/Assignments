@@ -11,16 +11,13 @@
 class CallbackPool {
   constructor(limit) {
     this.limit = limit
+    this.queue = []
+    this.running = 0
   }
 
   run(task, onComplete) {
-    if (task === this.limit) {
-      return new Error("limit reached")
+    if (this.running === limit) {
 
-    }
-
-    if (onComplete) {
-      this._next()
     }
   }
 

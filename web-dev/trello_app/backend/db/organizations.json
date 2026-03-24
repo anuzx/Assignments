@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "title": "rust",
+    "description": "make own compiler",
+    "adminId": 3,
+    "members": [
+      1,
+      2
+    ]
+  }
+]
