@@ -7,5 +7,5 @@ import { VerifyUser } from "../middlewares/verify.js";
 const router = Router()
 
 router.post("/create", VerifyUser, createOrganization)
-router.post("/", VerifyUser, getOrganization)
+router.get("/", VerifyUser, getOrganization)
 export default router

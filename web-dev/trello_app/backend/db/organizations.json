@@ -4,9 +4,17 @@
     "title": "rust",
     "description": "make own compiler",
     "adminId": 3,
+    "members": []
+  },
+  {
+    "id": 2,
+    "title": "onlyhaters",
+    "description": "we hate",
+    "adminId": 4,
     "members": [
-      1,
-      2
+      {
+        "id": 2
+      }
     ]
   }
 ]

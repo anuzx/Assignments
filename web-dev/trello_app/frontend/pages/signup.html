@@ -1,0 +1,26 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+  <input type="text" placeholder="username..." id="name" />
+  <input type="text" placeholder="xyz@gmail.com" id="email" />
+  <input type="password" placeholder="password" id="password" />
+  <button>Signup</button>
+
+  <script>
+    const postSignup = require("../api/auth.js")
+    const name = document.getElementById("name")
+    const email = document.getElementById("email")
+    const password = document.getElementById("password")
+
+    await postSignup(name, email, password)
+
+
+
+  </script>
+</body>
+
+</html>

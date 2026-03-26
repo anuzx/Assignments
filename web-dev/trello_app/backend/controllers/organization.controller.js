@@ -37,7 +37,7 @@ export const createOrganization = async (req, res) => {
   Orgs.push(newOrg);
   await saveTable(DB_ORG, Orgs)
 
-  res.status(201).json({ message: `Table created with Id: ${newOrg.id}` })
+  res.status(201).json({ message: `organization created with Id: ${newOrg.id}` })
 
 }
 
@@ -51,7 +51,7 @@ export const getOrganization = async (req, res) => {
 
   const existOrg = Org.find(o => o.id === orgId)
 
-  if (!existOrg || existOrg.adminId === userId) {
+  if (!existOrg || !existOrg.adminId === userId) {
     return res.status(404).json({ message: "organization not found" })
   }
 

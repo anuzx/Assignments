@@ -32,7 +32,7 @@ export const createBoard = async (req, res) => {
     organizationId
   }
   Board.push(newBoard)
-  await saveTable(Board)
+  await saveTable(DB_BOARD, Board)
 
   res.status(201).json({ message: "board created" })
 }

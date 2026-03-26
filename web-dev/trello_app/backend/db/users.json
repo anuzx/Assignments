@@ -16,5 +16,11 @@
     "name": "qwerty",
     "email": "icarus1010@gmail.com",
     "password": "123123123"
+  },
+  {
+    "id": 4,
+    "name": "deadsoul",
+    "email": "arisebabe@gmail.com",
+    "password": "whoami"
   }
 ]
