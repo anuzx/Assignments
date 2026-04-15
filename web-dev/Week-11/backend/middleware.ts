@@ -9,9 +9,12 @@ declare global {
   }
 }
 
-export const VerifyUser = (req: Request, _res: Response, next: NextFunction) => {
+export const VerifyUser = (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization?.split(" ")[1]
 
+  if (!token) {
+    return res.status(403).json("Access denied")
+  }
   try {
     const decoded = jwt.verify(token, "secret") as { id: string }
 

@@ -1,6 +1,11 @@
 import express from "express"
+import mongoose from "mongoose"
 
 const app = express()
+
+const connectDB = async () => {
+  await mongoose.connect("mongodb://localhost:27017/assignment")
+}
 
 app.use(express.json())
 
@@ -10,4 +15,6 @@ import accountRouter from "./routes/account.ts"
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/account", accountRouter)
 
-app.listen(3000, () => console.log("server running at port 3000..."))
+connectDB().then(() => {
+  app.listen(3000, () => console.log("server started at port 3000..."))
+})

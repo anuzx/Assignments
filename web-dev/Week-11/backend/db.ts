@@ -16,7 +16,7 @@ const UserSchema = new Schema({
   lastname: {
     type: String
   }
-})
+}, { timestamps: true, versionKey: false })
 
 const AccountSchema = new Schema({
   userId: {
@@ -26,7 +26,7 @@ const AccountSchema = new Schema({
   balance: {
     type: Number
   }
-})
+}, { timestamps: true, versionKey: false })
 
 export const User = mongoose.model("User", UserSchema)
 
