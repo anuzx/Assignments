@@ -1,6 +1,5 @@
 
 import { client } from "..";
-import { QueryResult } from "pg";
 
 interface TravelPlan {
   id: number;
@@ -33,8 +32,14 @@ export async function createTravelPlan(
   startDate: string,
   endDate: string,
   budget: number
-) {
+): Promise<TravelPlan> {
+  const query = `INSERT INTO travel_plans(user_id , title , destination_city , destination_country , start_date , end_date , budget) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *`
 
+  const values = [userId, title, destinationCity, destinationCountry, startDate, endDate, budget]
+
+  const plan = await client.query(query, values)
+
+  return plan.rows[0]
 }
 
 /*
@@ -45,8 +50,13 @@ export async function updateTravelPlan(
   planId: number,
   title?: string,
   budget?: number
-) {
+): Promise<TravelPlan> {
+  const query = `UPDATE travel_plans SET title=$1 , budget=$2 WHERE id=$3 RETURNING *`
+  const values = [title, budget, planId]
 
+  const updatedPlan = await client.query(query, values)
+
+  return updatedPlan.rows[0]
 }
 
 /*
@@ -63,5 +73,10 @@ export async function updateTravelPlan(
  * }]
  */
 export async function getTravelPlans(userId: number) {
+  const query = `SELECT * FROM travel_plans WHERE user_id=$1`
+  const values = [userId]
 
+  const plans = await client.query(query, values)
+
+  return plans.rows
 }
