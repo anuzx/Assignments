@@ -30,24 +30,24 @@ export const submitProblem = async (req: Request, res: Response) => {
 
     //total problems in this course
     const totalResult = await client.query(
-      `SELECT COUNT(*) as total FROM problems WHERE course_id = $1`,
+      `SELECT COUNT(*)::int as total FROM problems WHERE course_id = $1`,
       [course_id]
     )
-    const total = parseInt(totalResult.rows[0].total)
+    const total = totalResult.rows[0].total
 
     //SOLVED PROBLEMS
     const solvedResult = await client.query(
-      `SELECT COUNT(*) as solved 
+      `SELECT COUNT(*)::int as solved 
        FROM submissions s
        JOIN problems p ON s.problem_id = p.id
        WHERE s.user_id = $1 AND p.course_id = $2`,
       [user_id, course_id]
     )
-    const solved = parseInt(solvedResult.rows[0].solved)
+    const solved = solvedResult.rows[0].solved
 
 
     //calculate percentage
-    const percentage = ((solved / total) * 100).toFixed(2)
+    const percentage = total === 0 ? "0.00" : ((solved / total) * 100).toFixed(2)
 
     //upsert into progress
     await client.query(
@@ -58,6 +58,8 @@ export const submitProblem = async (req: Request, res: Response) => {
       [user_id, course_id, percentage]
     )
     await client.query('COMMIT')
+
+    res.status(200).json({ message: "submitted successfully", completion_percentage: percentage })
 
   } catch (error) {
 
