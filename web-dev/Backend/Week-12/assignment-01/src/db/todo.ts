@@ -1,14 +1,13 @@
 
-
 import { client } from "..";
 import { QueryResult } from "pg";
 
 interface TODO {
-    id: number;
-    title: string;
-    description: string;
-    done: boolean;
-    // Additional properties if present in your database schema
+  id: number;
+  title: string;
+  description: string;
+  done: boolean;
+  // Additional properties if present in your database schema
 }
 /*
  * Function should insert a new todo for this user
@@ -26,7 +25,12 @@ export async function createTodo(
   title: string,
   description: string
 ) {
-  
+  const query = `INSERT INTO todos (user_id , title , description) VALUES($1,$2,$3) RETURNING *`
+  const values = [userId, title, description]
+
+  const todo = await client.query(query, values)
+
+  return todo.rows[0]
 }
 
 /*
@@ -42,7 +46,12 @@ export async function createTodo(
 
 
 export async function updateTodo(todoId: number) {
-  
+
+  const query = `UPDATE todos SET done = true WHERE id=$1 RETURNING *`
+  const values = [todoId]
+  const updatedTodo = await client.query(query, values)
+
+  return updatedTodo.rows[0]
 }
 /*
  *  Get all the todos of a given user
@@ -56,5 +65,10 @@ export async function updateTodo(todoId: number) {
  */
 
 export async function getTodos(userId: number) {
- 
+  const query = `SELECT * FROM todos WHERE user_id=$1`
+  const values = [userId]
+
+  const todo = await client.query(query, values)
+
+  return todo.rows
 }
