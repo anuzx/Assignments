@@ -19,3 +19,13 @@
 //     { name: "Charlie", age: 22, country: "India" }
 //   ]
 
+export interface User {
+  name: string;
+  age: number;
+  country: string
+
+}
+
+export function filterUsersByCountry(arr: User[], country: string): User[] {
+  return arr.filter((u) => u.country === country)
+}

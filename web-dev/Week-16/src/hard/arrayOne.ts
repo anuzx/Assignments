@@ -10,4 +10,19 @@
 // Example Input 3: []
 // Example Output 3: Throws an error: "Array cannot be empty"
 
+export function findMinimumValue(arr: number[]) {
 
+  if (arr.length === 0) {
+    throw new Error("Array cannot be empty")
+  }
+
+  let min = arr[0]
+
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < min) {
+      min = arr[i]
+    }
+  }
+
+  return min
+}
