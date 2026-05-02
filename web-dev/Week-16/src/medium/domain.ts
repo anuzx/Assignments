@@ -14,3 +14,21 @@
 // Example Output:
 // true
 
+export interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  age: number
+}
+
+export function isAllowedDomain(user: User, allowedDomain: string): boolean {
+
+  const domain = user.email.split("@")[1]
+
+  if (`@${domain}` === allowedDomain) {
+    return true
+  }
+
+  return false
+
+}
